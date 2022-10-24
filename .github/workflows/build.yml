@@ -52,6 +52,8 @@ jobs:
           githubToken: ${{ github.token }}
 
           install: |
+            curl -s https://deb.nodesource.com/setup_16.x | sudo bash
+
             apt-get update -q -y
             apt-get install -q -y nodejs npm
 
