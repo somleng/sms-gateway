@@ -42,22 +42,3 @@ jobs:
           npm ci
           npm run build
           npm run dist
-
-      - name: Generate dist for arm64
-        uses: uraimo/run-on-arch-action@v2
-        with:
-          arch: aarch64
-          distro: ubuntu_latest
-
-          githubToken: ${{ github.token }}
-
-          install: |
-            curl -s https://deb.nodesource.com/setup_16.x | sudo bash
-
-            apt-get update -q -y
-            apt-get install -q -y nodejs npm
-
-          run: |
-            npm ci
-            npm run build
-            npm run dist:arm64
