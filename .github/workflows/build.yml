@@ -36,5 +36,6 @@ jobs:
 
       - name: Generate dist
         run: |
+          npm install
           npm run build
           npm run dist
