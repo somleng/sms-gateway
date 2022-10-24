@@ -42,3 +42,18 @@ jobs:
           npm ci
           npm run build
           npm run dist
+
+      - name: Generate dist for arm64
+        uses: uraimo/run-on-arch-action@v2
+        with:
+          arch: aarch64
+          distro: ubuntu_latest
+
+          install: |
+            apt-get update -q -y
+            apt-get install -q -y nodejs
+
+          run: |
+            npm ci
+            npm run build
+            npm run dist:arm64
