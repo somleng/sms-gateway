@@ -49,6 +49,8 @@ jobs:
           arch: aarch64
           distro: ubuntu_latest
 
+          githubToken: ${{ github.token }}
+
           install: |
             apt-get update -q -y
             apt-get install -q -y nodejs npm
