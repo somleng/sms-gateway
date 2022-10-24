@@ -51,7 +51,7 @@ jobs:
 
           install: |
             apt-get update -q -y
-            apt-get install -q -y nodejs
+            apt-get install -q -y nodejs npm
 
           run: |
             npm ci
