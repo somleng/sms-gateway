@@ -6,9 +6,13 @@
   "bin": {
     "somleng-sms-gateway": "bin/cli.js"
   },
-  "scripts": {},
+  "scripts": {
+    "build": "esbuild bin/cli.js --bundle --platform=node --outfile=build/somleng-sms-gateway.js",
+    "dist": "pkg build/somleng-sms-gateway.js --out-path build/dist",
+    "release": "pkg build/somleng-sms-gateway.js --out-path build/dist -t macos-x64,win-x64,linux-x64"
+  },
   "keywords": [],
-  "author": "",
+  "author": "Somleng Team",
   "license": "MIT",
   "dependencies": {
     "@anycable/web": "^0.5.2",
@@ -17,6 +21,7 @@
     "ws": "^8.9.0"
   },
   "devDependencies": {
+    "esbuild": "^0.15.12",
     "eslint": "^8.25.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^8.5.0",

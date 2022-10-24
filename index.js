@@ -1,3 +1,3 @@
-import ActionCableClient from "./lib/action_cable_client.js";
+import SomlengClient from "./lib/somleng_client";
 
-export { ActionCableClient };
+export { SomlengClient };
