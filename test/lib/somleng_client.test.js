@@ -1,7 +1,7 @@
-import { SomlengClient } from "../../";
 import { TestCable } from "../test_helper";
+import SomlengClient from "../../lib/somleng_client";
 
-describe("SomlengClient", () => {
+describe(SomlengClient, () => {
   let client;
   let cable;
 
