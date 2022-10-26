@@ -46,34 +46,35 @@ jobs:
           npm run build
           npm run dist
 
-          package_version=$(npm pkg get version | xargs echo)
           package_name=$(npm pkg get name | xargs echo)
-
-          cp build/dist/$package_name-linux $package_name
-          zip "$package_name-linux-x86_64-v$package_version.zip" $package_name
-          echo "::set-output name=linux_pkg::$package_name-linux-x86_64-v$package_version.zip"
-
-          cp build/dist/$package_name-macos $package_name
-          zip "$package_name-macos-x86_64-v$package_version.zip" $package_name
-          echo "::set-output name=macos_pkg::$package_name-macos-x86_64-v$package_version.zip"
-
-
-          cp build/dist/$package_name-win.exe $package_name.exe
-          zip "$package_name-win-x86_64-v$package_version.zip" $package_name.exe
-          echo "::set-output name=win_pkg::$package_name-win-x86_64-v$package_version.zip"
-
+          echo "package_name=$package_name" >> $GITHUB_OUTPUT
 
       - uses: google-github-actions/release-please-action@v3
         id: release-please
         with:
           release-type: node
-          package-name: somleng-sms-gateway
+          package-name: ${{ steps.generate_dist.outputs.package_name }}
 
       - name: Add assets to Github Release
         if: ${{ steps.release-please.outputs.release_created }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release upload ${{ steps.release-please.outputs.tag_name }} ${{ steps.generate_dist.outputs.linux_pkg }}
-          gh release upload ${{ steps.release-please.outputs.tag_name }} ${{ steps.generate_dist.outputs.macos_pkg }}
-          gh release upload ${{ steps.release-please.outputs.tag_name }} ${{ steps.generate_dist.outputs.win_pkg }}
+
+          package_version=$(npm pkg get version | xargs echo)
+          linux_pkg=$package_name-linux-x86_64-v$package_version.zip
+          macos_pkg=$package_name-macos-x86_64-v$package_version.zip
+          win_pkg=$package_name-win-x86_64-v$package_version.zip
+
+          cp build/dist/$package_name-linux $package_name
+          zip $linux_pkg $package_name
+
+          cp build/dist/$package_name-macos $package_name
+          zip $macos_pkg $package_name
+
+          cp build/dist/$package_name-win.exe $package_name.exe
+          zip $win_pkg $package_name.exe
+
+          gh release upload ${{ steps.release-please.outputs.tag_name }} $linux_pkg
+          gh release upload ${{ steps.release-please.outputs.tag_name }} $macos_pkg
+          gh release upload ${{ steps.release-please.outputs.tag_name }} $win_pkg
