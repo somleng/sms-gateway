@@ -12,7 +12,7 @@ async function run() {
     .requiredOption("--smpp-port <value>", "SMPP port", "2775")
     .requiredOption("--smpp-system-id <value>", "SMPP System ID")
     .requiredOption("--smpp-password <value>", "SMPP password")
-    .requiredOption("-d, --domain <value>", "Somleng Domain", "ws://localhost:3000")
+    .requiredOption("-d, --domain <value>", "Somleng Domain", "wss://app.somleng.org")
     .option("-v, --verbose", "Output extra debugging")
     .showHelpAfterError()
     .parse();
