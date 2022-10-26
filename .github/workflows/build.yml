@@ -71,6 +71,8 @@ jobs:
 
       - name: Add assets to Github Release
         if: ${{ steps.release-please.outputs.release_created }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh release upload ${{ steps.release-please.outputs.tag_name }} ${{ steps.generate_dist.outputs.linux_pkg }}
           gh release upload ${{ steps.release-please.outputs.tag_name }} ${{ steps.generate_dist.outputs.macos_pkg }}
