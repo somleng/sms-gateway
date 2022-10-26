@@ -64,10 +64,14 @@ jobs:
 
 
       - uses: google-github-actions/release-please-action@v3
+        id: release-please
         with:
           release-type: node
           package-name: somleng-sms-gateway
-          extra-files: |
-            "${{ steps.generate_dist.outputs.linux_pkg }}"
-            "${{ steps.generate_dist.outputs.macos_pkg }}"
-            "${{ steps.generate_dist.outputs.win_pkg }}"
+
+      - name: Add assets to Github Release
+        if: ${{ steps.release-please.outputs.release_created }}
+        run: |
+          gh release upload ${{ steps.release-please.outputs.tag_name }} ${{ steps.generate_dist.outputs.linux_pkg }}
+          gh release upload ${{ steps.release-please.outputs.tag_name }} ${{ steps.generate_dist.outputs.macos_pkg }}
+          gh release upload ${{ steps.release-please.outputs.tag_name }} ${{ steps.generate_dist.outputs.win_pkg }}
