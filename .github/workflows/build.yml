@@ -62,6 +62,7 @@ jobs:
         run: |
 
           package_version=$(npm pkg get version | xargs echo)
+          package_name=${{ steps.generate_dist.outputs.package_name }}
           linux_pkg=$package_name-linux-x86_64-v$package_version.zip
           macos_pkg=$package_name-macos-x86_64-v$package_version.zip
           win_pkg=$package_name-win-x86_64-v$package_version.zip
