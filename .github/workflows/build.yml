@@ -45,7 +45,5 @@ jobs:
           npm run build
           npm run dist
 
-      - uses: google-github-actions/release-please-action@v3
-        with:
-          release-type: node
-          package-name: somleng-sms-gateway
+          package_version=$(npm pkg get version | xargs echo)
+          echo $package_version
