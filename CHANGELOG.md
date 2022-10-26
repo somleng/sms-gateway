@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.3](https://github.com/somleng/sms-gateway/compare/v1.0.2...v1.0.3) (2022-10-26)
+
+
+### Bug Fixes
+
+* Add more assets to Github Release ([a94d931](https://github.com/somleng/sms-gateway/commit/a94d931dbf3344b51b19a8730e8db56681f90dbf))
+
 ## [1.0.2](https://github.com/somleng/sms-gateway/compare/v1.0.1...v1.0.2) (2022-10-26)
 
 
