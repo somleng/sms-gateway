@@ -8,7 +8,7 @@
   },
   "scripts": {
     "build": "esbuild bin/cli.js --bundle --platform=node --outfile=build/somleng-sms-gateway.js",
-    "dist": "pkg build/somleng-sms-gateway.js --out-path build/dist"
+    "dist": "pkg --compress GZip build/somleng-sms-gateway.js --out-path build/dist"
   },
   "keywords": [],
   "author": "Somleng Team",
