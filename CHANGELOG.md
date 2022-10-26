@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.5](https://github.com/somleng/sms-gateway/compare/v1.0.4...v1.0.5) (2022-10-26)
+
+
+### Bug Fixes
+
+* Github Action build scripts ([15e07ce](https://github.com/somleng/sms-gateway/commit/15e07ce1497578f3149881d4a9c0d2e25f871eb6))
+
 ## [1.0.4](https://github.com/somleng/sms-gateway/compare/v1.0.3...v1.0.4) (2022-10-26)
 
 
