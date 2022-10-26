@@ -40,10 +40,34 @@ jobs:
           cache: 'npm'
 
       - name: Generate dist
+        id: generate_dist
         run: |
           npm ci
           npm run build
           npm run dist
 
           package_version=$(npm pkg get version | xargs echo)
-          echo $package_version
+          package_name=$(npm pkg get name | xargs echo)
+
+          cp build/dist/$package_name-linux $package_name
+          zip "$package_name-linux-x86_64-v$package_version.zip" $package_name
+          echo "::set-output name=linux_pkg::$package_name-linux-x86_64-v$package_version.zip"
+
+          cp build/dist/$package_name-macos $package_name
+          zip "$package_name-macos-x86_64-v$package_version.zip" $package_name
+          echo "::set-output name=macos_pkg::$package_name-macos-x86_64-v$package_version.zip"
+
+
+          cp build/dist/$package_name-win.exe $package_name.exe
+          zip "$package_name-win-x86_64-v$package_version.zip" $package_name.exe
+          echo "::set-output name=win_pkg::$package_name-win-x86_64-v$package_version.zip"
+
+
+      - uses: google-github-actions/release-please-action@v3
+        with:
+          release-type: node
+          package-name: somleng-sms-gateway
+          extra-files: |
+            "${{ steps.generate_dist.outputs.linux_pkg }}"
+            "${{ steps.generate_dist.outputs.macos_pkg }}"
+            "${{ steps.generate_dist.outputs.win_pkg }}"
