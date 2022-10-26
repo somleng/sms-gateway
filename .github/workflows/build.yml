@@ -19,11 +19,16 @@ jobs:
           node-version: '16.x'
           cache: 'npm'
 
+      - name: Setup dependencies
+        run: npm ci
+
   release:
     name: Release
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
     needs:
       - build
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -36,6 +41,11 @@ jobs:
 
       - name: Generate dist
         run: |
-          npm install
+          npm ci
           npm run build
           npm run dist
+
+      - uses: google-github-actions/release-please-action@v3
+        with:
+          release-type: node
+          package-name: somleng-sms-gateway
