@@ -2,39 +2,47 @@
 
 import { program } from "commander";
 
-import { SomlengClient } from "../index.js";
+import SomlengClient from "../lib/somleng_client.js";
 import SMPPGateway from "../lib/smpp_gateway.js";
+
+import { readFileSync } from "fs";
 
 async function run() {
   program
-    .requiredOption("-k, --key <value>", "Device key")
-    .requiredOption("--smpp-host <value>", "SMPP host")
-    .requiredOption("--smpp-port <value>", "SMPP port", "2775")
-    .requiredOption("--smpp-system-id <value>", "SMPP System ID")
-    .requiredOption("--smpp-password <value>", "SMPP password")
+    .requiredOption("-c, --credentials <file>", "Credentials file")
     .requiredOption("-d, --domain <value>", "Somleng Domain", "wss://app.somleng.org")
     .option("-v, --verbose", "Output extra debugging")
     .showHelpAfterError()
     .parse();
   const options = program.opts();
 
+  const configData = readFileSync(options.credentials);
+  const config = JSON.parse(configData);
+
+  config.verbose = options.verbose || config.verbose;
+  config.domain = options.domain || config.domain;
+
   const client = new SomlengClient({
-    domain: options.domain,
-    deviceKey: options.key,
+    domain: config.domain,
+    deviceKey: config.key,
   });
   await client.subscribe();
 
-  const smppGateway = new SMPPGateway({
-    host: options.smppHost,
-    port: options.smppPort,
-    systemId: options.smppSystemId,
-    password: options.smppPassword,
-    debug: options.verbose,
+  const smppGateways = {};
+  config.channels.forEach(async (channel) => {
+    smppGateways[channel.id] = new SMPPGateway({
+      host: channel.smppHost,
+      port: channel.smppPort,
+      systemId: channel.systemId,
+      password: channel.password,
+      debug: config.verbose,
+    });
+
+    await smppGateways[channel.id].connect();
   });
-  await smppGateway.connect();
 
   client.onNewMessage(async (message) => {
-    const deliveryReceipt = await smppGateway.sendMessage({
+    const deliveryReceipt = await smppGateways[message.channelId].sendMessage({
       destination: message.to,
       short_message: message.message,
     });

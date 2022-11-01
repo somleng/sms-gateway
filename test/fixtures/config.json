@@ -1,0 +1,21 @@
+{
+  "key": "3b3862e3-2fc4-46d6-951d-17cbd6bc6b61",
+  "domain": "ws://localhost:3000",
+  "verbose": true,
+  "channels": [
+    {
+      "id": 1,
+      "smppHost": "192.168.1.75",
+      "smppPort": "2775",
+      "systemId": "foobar01",
+      "password": "secret"
+    },
+    {
+      "id": 2,
+      "smppHost": "192.168.1.75",
+      "smppPort": "2775",
+      "systemId": "foobar02",
+      "password": "secret"
+    }
+  ]
+}
