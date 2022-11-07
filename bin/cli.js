@@ -1,14 +1,19 @@
 #!/usr/bin/env node
 
 import { program } from "commander";
+import { readFileSync } from "fs";
 
 import SomlengClient from "../lib/somleng_client.js";
 import SMPPGateway from "../lib/smpp_gateway.js";
 
-import { readFileSync } from "fs";
-
-async function run() {
+async function main() {
   program
+    // .requiredOption("-k, --key <value>", "Device key")
+    // .addOption(new Option("-m, --model <value>").choices(["goip"]))
+    // .requiredOption("--goip-smpp-host <value>", "SMPP host")
+    // .requiredOption("--goip-smpp-port <value>", "SMPP port", "2775")
+    // .requiredOption("--goip-smpp-system-id <value>", "SMPP System ID")
+    // .requiredOption("--goip-smpp-password <value>", "SMPP password")
     .requiredOption("-c, --credentials <file>", "Credentials file")
     .requiredOption("-d, --domain <value>", "Somleng Domain", "wss://app.somleng.org")
     .option("-v, --verbose", "Output extra debugging")
@@ -55,4 +60,7 @@ async function run() {
   });
 }
 
-run();
+main().catch((error) => {
+  console.error(error);
+  process.exit(1);
+});
