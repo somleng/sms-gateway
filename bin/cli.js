@@ -8,6 +8,7 @@ import { GoIPGateway, DummyGateway } from "../lib/gateways/index.js";
 async function main() {
   let options = {};
   let gateway;
+  let outboundQueue = new Map();
 
   program
     .requiredOption("-k, --key <value>", "Device key")
@@ -62,14 +63,20 @@ async function main() {
         short_message: message.message,
       });
 
-      await client.notifyDeliveryReceipt({
-        id: message.id,
-        externalMessageId: deliveryReceipt.messageId,
-        status: deliveryReceipt.status,
-      });
+      outboundQueue.set(deliveryReceipt.messageId, { messageId: message.id });
+      setTimeout(() => outboundQueue.delete(deliveryReceipt.messageId), 10000); // Clean up weather if it sent or not
     } catch (e) {
       console.error(e.message);
     }
+  });
+
+  gateway.onSent(async (deliveryReceipt) => {
+    await client.notifyDeliveryReceipt({
+      id: outboundQueue.get(deliveryReceipt.messageId).messageId,
+      externalMessageId: deliveryReceipt.messageId,
+    });
+
+    outboundQueue.delete(deliveryReceipt.messageId);
   });
 }
 
