@@ -58,9 +58,11 @@ async function main() {
 
   client.onNewMessage(async (message) => {
     try {
-      const deliveryReceipt = await gateway.sendMessage(message.channelId, {
+      const deliveryReceipt = await gateway.sendMessage({
+        channelId: message.channelId,
+        source: message.from,
         destination: message.to,
-        short_message: message.message,
+        shortMessage: message.body,
       });
 
       outboundQueue.set(deliveryReceipt.messageId, { messageId: message.id });
@@ -71,12 +73,21 @@ async function main() {
   });
 
   gateway.onSent(async (deliveryReceipt) => {
-    await client.notifyDeliveryReceipt({
-      id: outboundQueue.get(deliveryReceipt.messageId).messageId,
-      externalMessageId: deliveryReceipt.messageId,
-    });
+    if (outboundQueue.has(deliveryReceipt.messageId)) {
+      await client.notifyDeliveryReceipt({
+        id: outboundQueue.get(deliveryReceipt.messageId).messageId,
+      });
 
-    outboundQueue.delete(deliveryReceipt.messageId);
+      outboundQueue.delete(deliveryReceipt.messageId);
+    }
+  });
+
+  gateway.onReceived(async (message) => {
+    client.receivedMessage({
+      from: message.source,
+      to: message.destination,
+      body: message.shortMessage,
+    });
   });
 }
 

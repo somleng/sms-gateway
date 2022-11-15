@@ -19,4 +19,16 @@ describe(SomlengClient, () => {
 
     cable.broadcast('{"channel":"SMSMessageChannel"}', "message-data");
   });
+
+  it("notifies delivery receipt", async () => {
+    await client.notifyDeliveryReceipt("data");
+
+    expect(cable.outgoing).toEqual([{ action: "delivered", payload: "data" }]);
+  });
+
+  it("receives a new message", async () => {
+    await client.receivedMessage("message");
+
+    expect(cable.outgoing).toEqual([{ action: "received", payload: "message" }]);
+  });
 });
