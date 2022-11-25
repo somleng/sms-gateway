@@ -13,11 +13,19 @@ describe(SomlengClient, () => {
   });
 
   it("handles incoming new messages", async () => {
+    const data = {
+      id: "id",
+      channel: 1,
+      from: "85510888888",
+      to: "85510777777",
+      body: "this is a testing",
+    };
+
     client.onNewMessage((message) => {
-      expect(message).toEqual("message-data");
+      expect(message).toEqual(data);
     });
 
-    cable.broadcast('{"channel":"SMSMessageChannel"}', "message-data");
+    cable.broadcast('{"channel":"SMSMessageChannel"}', data);
   });
 
   it("notifies delivery receipt", async () => {
