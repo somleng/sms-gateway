@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
-import { program, Option } from "commander";
+import { program } from "commander";
+import { createLogger, format, transports } from "winston";
 
 import SomlengClient from "../lib/somleng_client.js";
 import { GoIPGateway, DummyGateway } from "../lib/gateways/index.js";
@@ -48,34 +49,57 @@ async function main() {
   program.parse();
   options = { ...options, ...program.opts() };
 
+  const logger = createLogger({
+    level: options.verbose ? "debug" : "info",
+    format: format.combine(
+      format.label({ label: "Somleng SMS Gateway" }),
+      format.timestamp(),
+      format.json()
+    ),
+    transports: [new transports.Console()],
+  });
+
+  logger.debug("Connecting to gateway");
   await gateway.connect();
 
   const client = new SomlengClient({
     domain: options.domain,
     deviceKey: options.key,
   });
+  logger.debug("Connecting to Somleng");
   await client.subscribe();
 
   client.onNewMessage(async (message) => {
+    logger.debug("onNewMessage", message);
+
     try {
       const deliveryReceipt = await gateway.sendMessage({
-        channelId: message.channelId,
+        channel: message.channel,
         source: message.from,
         destination: message.to,
         shortMessage: message.body,
       });
 
+      logger.debug("Sending a message", message);
       outboundQueue.set(deliveryReceipt.messageId, { messageId: message.id });
-      setTimeout(() => outboundQueue.delete(deliveryReceipt.messageId), 10000); // Clean up weather if it sent or not
     } catch (e) {
       console.error(e.message);
     }
   });
 
   gateway.onSent(async (deliveryReceipt) => {
+    logger.debug("onSent", deliveryReceipt);
+
     if (outboundQueue.has(deliveryReceipt.messageId)) {
+      logger.debug(
+        "notifyDeliveryReceipt: ",
+        outboundQueue.get(deliveryReceipt.messageId).messageId,
+        deliveryReceipt
+      );
+
       await client.notifyDeliveryReceipt({
         id: outboundQueue.get(deliveryReceipt.messageId).messageId,
+        status: deliveryReceipt.status,
       });
 
       outboundQueue.delete(deliveryReceipt.messageId);
@@ -83,6 +107,8 @@ async function main() {
   });
 
   gateway.onReceived(async (message) => {
+    logger.debug("onReceived", message);
+
     client.receivedMessage({
       from: message.source,
       to: message.destination,
