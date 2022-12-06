@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.8](https://github.com/somleng/sms-gateway/compare/v1.0.7...v1.0.8) (2022-12-06)
+
+
+### Bug Fixes
+
+* remove `host` option from dummy gateway ([cde3e7c](https://github.com/somleng/sms-gateway/commit/cde3e7cf19cd421fc43b8585f716b02f31a01e02))
+
 ## [1.0.7](https://github.com/somleng/sms-gateway/compare/v1.0.6...v1.0.7) (2022-12-06)
 
 
