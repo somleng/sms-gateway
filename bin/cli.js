@@ -39,11 +39,8 @@ async function main() {
   program
     .command("dummy")
     .description("connect to dummy Gateway")
-    .requiredOption("--dummy-host <value>", "Dummy host")
     .action((commandOptions) => {
-      gateway = new DummyGateway({
-        host: commandOptions.dummyHost,
-      });
+      gateway = new DummyGateway();
     });
 
   program.parse();
