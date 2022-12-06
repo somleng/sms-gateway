@@ -2,7 +2,7 @@
 
 [![GitHub Action](https://github.com/somleng/sms-gateway/actions/workflows/build.yml/badge.svg)](https://github.com/somleng/sms-gateway/actions)
 
-Somleng SMS Gateway (part of The Somleng Project) is used to setup your own on-premise SMS gateway system.
+Somleng SMS Gateway (part of [The Somleng Project](https://github.com/somleng/somleng-project)) is used to setup your own on-premise SMS gateway system.
 This will give you the ability to take full control of your SMS infrastructure.
 
 ![Somleng SMS Gateway](assets/diagram.png)
