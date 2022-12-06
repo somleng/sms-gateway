@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.7](https://github.com/somleng/sms-gateway/compare/v1.0.6...v1.0.7) (2022-12-06)
+
+
+### Bug Fixes
+
+* Add link to Somleng Project to README ([f41c758](https://github.com/somleng/sms-gateway/commit/f41c758d149420589e374c8169c8604999ca0396))
+
 ## [1.0.6](https://github.com/somleng/sms-gateway/compare/v1.0.5...v1.0.6) (2022-10-26)
 
 
