@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/somleng/sms-gateway/compare/v1.0.8...v1.1.0) (2022-12-07)
+
+
+### Features
+
+* HTTP Server for displaying gateway connection status ([#12](https://github.com/somleng/sms-gateway/issues/12)) ([2e70b37](https://github.com/somleng/sms-gateway/commit/2e70b379681ef9f0aef579743a5e51bd75595bab))
+
 ## [1.0.8](https://github.com/somleng/sms-gateway/compare/v1.0.7...v1.0.8) (2022-12-06)
 
 
