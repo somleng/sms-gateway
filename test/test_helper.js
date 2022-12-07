@@ -1,3 +1,7 @@
+import { jest } from "@jest/globals";
+
+jest.useFakeTimers();
+
 export class TestCable {
   constructor() {
     this.outgoing = [];
