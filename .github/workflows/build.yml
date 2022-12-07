@@ -22,6 +22,10 @@ jobs:
       - name: Setup dependencies
         run: npm ci
 
+      - name: Run Tests
+        run: npm run test
+
+
   release:
     name: Release
     runs-on: ubuntu-latest

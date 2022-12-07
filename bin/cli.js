@@ -4,6 +4,7 @@ import { program } from "commander";
 import { createLogger, format, transports } from "winston";
 
 import SomlengClient from "../lib/somleng_client.js";
+import HTTPServer from "../lib/http_server/index.js";
 import { GoIPGateway, DummyGateway } from "../lib/gateways/index.js";
 
 async function main() {
@@ -14,6 +15,7 @@ async function main() {
   program
     .requiredOption("-k, --key <value>", "Device key")
     .requiredOption("-d, --domain <value>", "Somleng Domain", "wss://app.somleng.org")
+    .requiredOption("-p, --http-server-port <value>", "HTTP Server Port", "3210")
     .option("-v, --verbose", "Output extra debugging")
     .showHelpAfterError();
 
@@ -56,7 +58,10 @@ async function main() {
     transports: [new transports.Console()],
   });
 
-  logger.debug("Connecting to gateway");
+  const httpServer = new HTTPServer({ port: options.httpServerPort, gateway: gateway });
+  httpServer.start();
+
+  logger.debug("Connecting to Gateway");
   await gateway.connect();
 
   const client = new SomlengClient({
