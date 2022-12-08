@@ -58,9 +58,6 @@ async function main() {
     transports: [new transports.Console()],
   });
 
-  const httpServer = new HTTPServer({ port: options.httpServerPort, gateway: gateway });
-  httpServer.start();
-
   logger.debug("Connecting to Gateway");
   await gateway.connect();
 
@@ -68,6 +65,14 @@ async function main() {
     domain: options.domain,
     deviceKey: options.key,
   });
+
+  const httpServer = new HTTPServer({
+    port: options.httpServerPort,
+    gateway: gateway,
+    somlengClient: client,
+  });
+  httpServer.start();
+
   logger.debug("Connecting to Somleng");
   await client.subscribe();
 
