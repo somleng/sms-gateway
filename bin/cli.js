@@ -5,7 +5,7 @@ import { createLogger, format, transports } from "winston";
 
 import SomlengClient from "../lib/somleng_client.js";
 import HTTPServer from "../lib/http_server/index.js";
-import { GoIPGateway, DummyGateway } from "../lib/gateways/index.js";
+import { GoIPGateway, SMPPGateway, DummyGateway } from "../lib/gateways/index.js";
 
 async function main() {
   let options = {};
@@ -34,6 +34,23 @@ async function main() {
         systemId: commandOptions.goipSmppSystemId,
         password: commandOptions.goipSmppPassword,
         channels: commandOptions.goipChannels,
+        debug: program.opts().verbose,
+      });
+    });
+
+  program
+    .command("smpp")
+    .description("connect to SMPP Gateway")
+    .requiredOption("--smpp-host <value>", "SMPP host")
+    .requiredOption("--smpp-port <value>", "SMPP port", "2775")
+    .requiredOption("--smpp-system-id <value>", "SMPP System ID")
+    .requiredOption("--smpp-password <value>", "SMPP password")
+    .action((commandOptions) => {
+      gateway = new SMPPGateway({
+        host: commandOptions.smppHost,
+        port: commandOptions.smppPort,
+        systemId: commandOptions.smppSystemId,
+        password: commandOptions.smppPassword,
         debug: program.opts().verbose,
       });
     });
