@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/somleng/sms-gateway/compare/v1.1.1...v1.2.0) (2022-12-08)
+
+
+### Features
+
+* Expose SMPP Gateway ([#16](https://github.com/somleng/sms-gateway/issues/16)) ([d5df48d](https://github.com/somleng/sms-gateway/commit/d5df48d4381cc7de4440c696385cb93e9a0f02ab))
+
 ## [1.1.1](https://github.com/somleng/sms-gateway/compare/v1.1.0...v1.1.1) (2022-12-08)
 
 
