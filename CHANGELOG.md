@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/somleng/sms-gateway/compare/v1.1.0...v1.1.1) (2022-12-08)
+
+
+### Bug Fixes
+
+* Add Somleng Status & Gateway Parameters ([#14](https://github.com/somleng/sms-gateway/issues/14)) ([783ae0f](https://github.com/somleng/sms-gateway/commit/783ae0ff295d0370725ac186effa239f848d4081))
+
 ## [1.1.0](https://github.com/somleng/sms-gateway/compare/v1.0.8...v1.1.0) (2022-12-07)
 
 
