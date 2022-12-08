@@ -8,6 +8,15 @@ This will give you the ability to take full control of your SMS infrastructure.
 ![Somleng SMS Gateway](assets/diagram.png)
 
 ## How to run
+
+### Connect SMS Gateway to SMPP Gateway
+```sh
+./somleng-sms-gateway smpp -k [your-device-key] \
+   --goip-smpp-host [goip-ip-address] \
+   --goip-smpp-system-id [smpp-system-id] \
+   --goip-smpp-password [smpp-password]
+```
+
 ### Connect SMS Gateway to GoIP (GSM Gateway)
 ```sh
 ./somleng-sms-gateway goip -k [your-device-key] \
