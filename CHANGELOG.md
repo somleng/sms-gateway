@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.2](https://github.com/somleng/sms-gateway/compare/v1.2.1...v1.2.2) (2022-12-09)
+
+
+### Bug Fixes
+
+* Add build for alpine ([#20](https://github.com/somleng/sms-gateway/issues/20)) ([6c9299b](https://github.com/somleng/sms-gateway/commit/6c9299b6190304c1c1f00aa4eed6014a55224b5e))
+
 ## [1.2.1](https://github.com/somleng/sms-gateway/compare/v1.2.0...v1.2.1) (2022-12-08)
 
 
