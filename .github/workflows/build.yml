@@ -67,9 +67,13 @@ jobs:
 
           package_version=$(npm pkg get version | xargs echo)
           package_name=${{ steps.generate_dist.outputs.package_name }}
+          alpine_pkg=$package_name-alpine-x86_64-v$package_version.zip
           linux_pkg=$package_name-linux-x86_64-v$package_version.zip
           macos_pkg=$package_name-macos-x86_64-v$package_version.zip
           win_pkg=$package_name-win-x86_64-v$package_version.zip
+
+          cp build/dist/$package_name-alpine $package_name
+          zip $alpine_pkg $package_name
 
           cp build/dist/$package_name-linux $package_name
           zip $linux_pkg $package_name
@@ -80,6 +84,7 @@ jobs:
           cp build/dist/$package_name-win.exe $package_name.exe
           zip $win_pkg $package_name.exe
 
+          gh release upload ${{ steps.release-please.outputs.tag_name }} $alpine_pkg
           gh release upload ${{ steps.release-please.outputs.tag_name }} $linux_pkg
           gh release upload ${{ steps.release-please.outputs.tag_name }} $macos_pkg
           gh release upload ${{ steps.release-please.outputs.tag_name }} $win_pkg
