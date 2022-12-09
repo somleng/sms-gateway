@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.3](https://github.com/somleng/sms-gateway/compare/v1.2.2...v1.2.3) (2022-12-09)
+
+
+### Bug Fixes
+
+* Build docker image ([#24](https://github.com/somleng/sms-gateway/issues/24)) ([6296de4](https://github.com/somleng/sms-gateway/commit/6296de4a8aabb12c1f072cda6e1fbf6cf7bde240))
+
 ## [1.2.2](https://github.com/somleng/sms-gateway/compare/v1.2.1...v1.2.2) (2022-12-09)
 
 
