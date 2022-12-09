@@ -112,5 +112,5 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ steps.extract_tag_name.outputs.tag_name }}, latest
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
