@@ -24,5 +24,4 @@ WORKDIR $APP_ROOT
 ENV PATH "$PATH:$APP_ROOT"
 
 COPY --from=build-image $APP_ROOT $APP_ROOT
-RUN export
 CMD ["somleng-sms-gateway"]
