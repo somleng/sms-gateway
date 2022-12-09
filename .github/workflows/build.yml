@@ -37,12 +37,18 @@ jobs:
         with:
           images: somleng/sms-gateway
 
+      - name: Extract tag name
+        id: extract_tag_name
+        run: |
+          tag_name=v1.2.4
+          echo "tag_name=${tag_name#v}" >> $GITHUB_OUTPUT
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
         with:
           context: .
           push: true
-          tags: v1.2.4,latest
+          tags: ${{ steps.extract_tag_name.outputs.tag_name }}, latest
           labels: ${{ steps.meta.outputs.labels }}
 
   release:
@@ -122,11 +128,18 @@ jobs:
         with:
           images: somleng/sms-gateway
 
+      - name: Extract tag name
+        if: ${{ steps.release-please.outputs.release_created }}
+        id: extract_tag_name
+        run: |
+          tag_name=${{ steps.release-please.outputs.tag_name }}
+          echo "tag_name=${tag_name#v}" >> $GITHUB_OUTPUT
+
       - name: Build and push Docker image
         if: ${{ steps.release-please.outputs.release_created }}
         uses: docker/build-push-action@v3
         with:
           context: .
           push: true
-          tags: ${{ steps.release-please.outputs.tag_name }}, latest
+          tags: ${{ steps.extract_tag_name.outputs.tag_name }}, latest
           labels: ${{ steps.meta.outputs.labels }}
