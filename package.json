@@ -9,7 +9,7 @@
   "scripts": {
     "test": "NODE_OPTIONS='--experimental-vm-modules' jest",
     "build": "esbuild bin/cli.js --bundle --platform=node --outfile=build/somleng-sms-gateway.js",
-    "dist": "pkg --compress GZip build/somleng-sms-gateway.js --out-path build/dist"
+    "dist": "pkg --compress GZip build/somleng-sms-gateway.js --out-path build/dist --targets alpine,linux,macos,win"
   },
   "keywords": [],
   "author": "Somleng Team",
