@@ -89,21 +89,24 @@ jobs:
           gh release upload ${{ steps.release-please.outputs.tag_name }} $win_pkg
 
       - name: Log in to Docker Hub
+        if: ${{ steps.release-please.outputs.release_created }}
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
       - name: Extract metadata (tags, labels) for Docker
+        if: ${{ steps.release-please.outputs.release_created }}
         id: meta
         uses: docker/metadata-action@v4
         with:
           images: somleng/sms-gateway
 
       - name: Build and push Docker image
+        if: ${{ steps.release-please.outputs.release_created }}
         uses: docker/build-push-action@v3
         with:
           context: .
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: ${{ steps.release-please.outputs.tag_name }}, latest
           labels: ${{ steps.meta.outputs.labels }}
