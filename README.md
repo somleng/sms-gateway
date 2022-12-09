@@ -2,12 +2,19 @@
 
 [![GitHub Action](https://github.com/somleng/sms-gateway/actions/workflows/build.yml/badge.svg)](https://github.com/somleng/sms-gateway/actions)
 
-Somleng SMS Gateway (part of [The Somleng Project](https://github.com/somleng/somleng-project)) is used to set up your own on-premise SMS gateway system and connect it to Somleng.
-This will give you the ability to take full control of your SMS infrastructure.
+Somleng SMS Gateway (part of [The Somleng Project](https://github.com/somleng/somleng-project)) is used to set up your own on-premise SMS gateway system and connect it to Somleng. This will give you the ability to take full control of your SMS infrastructure.
 
 ![Somleng SMS Gateway](assets/diagram.png)
 
 ## Downloading and Installing the SMS Gateway
+
+### Docker
+
+```sh
+docker pull somleng/sms-gateway
+```
+
+### Downloading the binary
 
 Download the [latest release](https://github.com/somleng/sms-gateway/releases) for your operating system.
 
@@ -38,9 +45,15 @@ The application supports a number of connection modes including:
 * [GoIP (GSM Gateway)](#goip-gsm-gateway)
 * [Dummy](#dummy)
 
+### Running with Docker
+
+```sh
+docker run -p 3210:3210 somleng/sms-gateway somleng-sms-gateway [options] [command]
+```
+
 ### Web Interface
 
-The Web interface displays connection information and configuration parameters. By default it's available
+The Web interface displays connection information and configuration parameters. By default, it's available
 at [http://localhost:3210](http://localhost:3210).
 
 ![SMPP Gateway Web Interface](assets/sms_gateway_connection_status.png)
