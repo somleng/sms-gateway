@@ -37,8 +37,8 @@ jobs:
         with:
           images: somleng/sms-gateway
           tags: |
-          # set latest tag for main branch
-          type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
+            # set latest tag for main branch
+            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
 
       - name: Extract tag name
         id: extract_tag_name
