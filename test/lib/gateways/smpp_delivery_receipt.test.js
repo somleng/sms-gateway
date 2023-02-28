@@ -1,6 +1,7 @@
 import {
   SMPPDeliveryReceipt,
-  InvalidMessageError,
+  InvalidMessageFormatError,
+  UnsupportedDeliveryStatusError,
 } from "../../../lib/gateways/smpp_delivery_receipt";
 
 describe(SMPPDeliveryReceipt, () => {
@@ -34,12 +35,21 @@ describe(SMPPDeliveryReceipt, () => {
     expect(deliveryReceipt.status).toEqual("failed");
   });
 
-  it("handles unsupported message", () => {
+  it("handles unsupported message format", () => {
     const message =
       "id:88316820 sub:0 dlvrd:0 submit date:2302281324 done date:2302281325 err:500 Text:Hello World from out";
 
     expect(() => {
       SMPPDeliveryReceipt.parse(message);
-    }).toThrow(InvalidMessageError);
+    }).toThrow(InvalidMessageFormatError);
+  });
+
+  it("handles unsupported delivery status", () => {
+    const message =
+      "id:5516a151-4970-45b6-b73e-95aefdb11cbf sub:001 dlvrd:001 submit date:2302231414 done date:230223194211 stat:EXPIRED err:000 text:Hello";
+
+    expect(() => {
+      SMPPDeliveryReceipt.parse(message);
+    }).toThrow(UnsupportedDeliveryStatusError);
   });
 });
