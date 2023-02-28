@@ -2,10 +2,34 @@
 
 import { program } from "commander";
 import { createLogger, format, transports } from "winston";
+import "@sentry/tracing";
+import * as Sentry from "@sentry/node";
 
 import SomlengClient from "../lib/somleng_client.js";
 import HTTPServer from "../lib/http_server/index.js";
 import { GoIPGateway, SMPPGateway, DummyGateway } from "../lib/gateways/index.js";
+
+Sentry.init({
+  dsn: "https://examplePublicKey@o0.ingest.sentry.io/0",
+  tracesSampleRate: 1.0,
+});
+
+Sentry.init({
+  dsn: "https://b4c80554595b4e75a9904318a8fe005d@o125014.ingest.sentry.io/4504756942864384",
+
+  // Set tracesSampleRate to 1.0 to capture 100%
+  // of transactions for performance monitoring.
+  // We recommend adjusting this value in production
+  tracesSampleRate: 1.0,
+});
+
+
+const transaction = Sentry.startTransaction({
+  op: "test",
+  name: "My First Test Transaction",
+});
+
+
 
 async function main() {
   let options = {};
