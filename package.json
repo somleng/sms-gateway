@@ -20,7 +20,7 @@
     "@sentry/tracing": "^7.53.1",
     "commander": "^10.0.1",
     "smpp": "^0.6.0-rc.4",
-    "winston": "^3.8.2",
+    "winston": "^3.9.0",
     "ws": "^8.13.0"
   },
   "devDependencies": {
