@@ -21,7 +21,7 @@
     "commander": "^11.0.0",
     "smpp": "^0.6.0-rc.4",
     "winston": "^3.10.0",
-    "ws": "^8.14.0"
+    "ws": "^8.14.1"
   },
   "devDependencies": {
     "esbuild": "^0.19.2",
