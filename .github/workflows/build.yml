@@ -52,7 +52,7 @@ jobs:
           package_name=$(npm pkg get name | xargs echo)
           echo "package_name=$package_name" >> $GITHUB_OUTPUT
 
-      - uses: google-github-actions/release-please-action@v3
+      - uses: google-github-actions/release-please-action@v4
         id: release-please
         with:
           release-type: node
