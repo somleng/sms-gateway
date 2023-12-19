@@ -17,7 +17,7 @@
   "dependencies": {
     "@anycable/core": "^0.7.11",
     "@sentry/node": "^7.88.0",
-    "@sentry/tracing": "^7.88.0",
+    "@sentry/tracing": "^7.89.0",
     "commander": "^11.1.0",
     "smpp": "^0.6.0-rc.4",
     "winston": "^3.11.0",
