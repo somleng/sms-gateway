@@ -68,6 +68,13 @@ jobs:
                       npm run build
                       npm run dist
 
+                  - name: Upload Documentation Source
+                    uses: actions/upload-artifact@v4
+                    with:
+                      name: build
+                      path: build/
+                      retention-days: 1
+
   # release:
   #   name: Release
   #   runs-on: ubuntu-latest
