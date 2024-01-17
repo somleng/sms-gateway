@@ -36,6 +36,9 @@ jobs:
           - os: linux
             platform: arm64
             runs-on: ubuntu-latest
+          - os: linux
+            platform: arm64
+            runs-on: ubuntu-latest
             aws-runner: true
           - os: macos
             platform: amd64
