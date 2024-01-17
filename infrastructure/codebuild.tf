@@ -26,7 +26,7 @@ resource "aws_iam_role" "codebuild" {
 
 data "aws_iam_policy_document" "codebuild" {
   statement {
-    effect    = "Allow"
+    effect = "Allow"
 
     resources = [
       "arn:aws:logs:*:*:log-group:/aws/codebuild/${local.codebuild_identifier}*",
@@ -37,6 +37,21 @@ data "aws_iam_policy_document" "codebuild" {
       "logs:CreateLogGroup",
       "logs:CreateLogStream",
       "logs:PutLogEvents"
+    ]
+  }
+
+  statement {
+    effect  = "Allow"
+    actions = [
+      "s3:PutObject",
+      "s3:GetObject",
+      "s3:GetObjectVersion",
+      "s3:GetBucketAcl",
+      "s3:GetBucketLocation"
+    ]
+    resources = [
+      data.aws_s3_bucket.artifacts.arn,
+      "${data.aws_s3_bucket.artifacts.arn}/*",
     ]
   }
 }
