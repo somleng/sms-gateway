@@ -1,24 +1,23 @@
-FROM alpine:latest as build-image
+FROM debian:bookworm-slim as build-image
 
 ARG APP_ROOT="/app"
 WORKDIR $APP_ROOT
 
-RUN apk update --no-cache && apk upgrade --no-cache && apk add --update --no-cache curl grep wget coreutils unzip jq
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y curl grep wget ca-certificates unzip jq
 
-RUN [[ $(arch) = "aarch64" ]] && arch="arm64" || arch="$(arch)" && \
-  curl -s https://api.github.com/repos/somleng/sms-gateway/releases/latest \
-  | jq ".assets.[].browser_download_url" \
-  | grep "somleng-sms-gateway-alpine-${arch}-v.*.zip" \
+RUN curl -s https://api.github.com/repos/somleng/sms-gateway/releases/latest \
+  | jq ".assets[].browser_download_url" \
+  | grep "somleng-sms-gateway-linux-$(arch)-v.*.zip" \
   | tr -d \" \
   | wget -qi - -O somleng-sms-gateway.zip \
   | echo "downloading..."
 
 RUN unzip somleng-sms-gateway.zip && \
-    rm somleng-sms-gateway.zip
+    rm somleng-sms-gateway.zip && \
+    chmod +x somleng-sms-gateway
 
-# #############################
-
-FROM alpine:latest
+FROM debian:bookworm-slim
 
 ARG APP_ROOT="/app"
 WORKDIR $APP_ROOT
