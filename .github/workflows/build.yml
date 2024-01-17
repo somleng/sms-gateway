@@ -30,12 +30,19 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: ["linux"]
+        os: ["linux", "macos"]
         platform: [amd64, arm64]
         include:
           - os: linux
             platform: arm64
+            runs-on: ubuntu-latest
             aws-runner: true
+          - os: macos
+            platform: amd64
+            runs-on: macos-latest
+          - os: macos
+            platform: arm64
+            runs-on: macos-latest-xlarge
 
     steps:
       - name: Checkout
