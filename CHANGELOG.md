@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.11](https://github.com/somleng/sms-gateway/compare/v1.2.10...v1.2.11) (2024-01-17)
+
+
+### Bug Fixes
+
+* Use debian-slim in Dockerfile ([#260](https://github.com/somleng/sms-gateway/issues/260)) ([37cdc69](https://github.com/somleng/sms-gateway/commit/37cdc69345ec2b3e1aee28cea2e7c1075b5821ba))
+
 ## [1.2.10](https://github.com/somleng/sms-gateway/compare/v1.2.9...v1.2.10) (2024-01-17)
 
 
