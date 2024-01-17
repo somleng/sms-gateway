@@ -57,6 +57,7 @@ jobs:
                 runtime-versions:
                   nodejs: 18.x
                 commands:
+                  - npm install
                   - n 21
 
               build:
@@ -67,6 +68,13 @@ jobs:
                       npm ci
                       npm run build
                       npm run dist
+
+                  - name: Upload Documentation Source
+                    uses: actions/upload-artifact@v4
+                    with:
+                      name: build
+                      path: build/
+                      retention-days: 1
 
   # release:
   #   name: Release
