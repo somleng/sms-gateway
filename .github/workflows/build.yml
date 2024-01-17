@@ -57,14 +57,10 @@ jobs:
                 runtime-versions:
                   nodejs: 18.x
                 commands:
-                  - npm install
                   - n 21
 
               build:
                 steps:
-                  - name: Display node version
-                    run: node -v
-
                   - name: Generate dist
                     id: generate_dist
                     run: |
