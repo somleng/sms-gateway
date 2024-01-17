@@ -114,13 +114,13 @@ jobs:
       - name: Download Packages from S3
         if : ${{ matrix.aws-runner }}
         run: |
-          aws s3 sync s3://ci-artifacts.somleng.org/${{ steps.set-build-parameters.outputs.build-project }}/${{ github.sha }}/build build
+          aws s3 cp s3://ci-artifacts.somleng.org/${{ steps.set-build-parameters.outputs.build-project }}/${{ github.sha }}/${{ steps.set-package-details.outputs.full_package_name }} build/${{ steps.set-package-details.outputs.full_package_name }}
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
           name: build
-          path: build/
+          path: build/${{ steps.set-package-details.outputs.full_package_name }}
           retention-days: 1
 
   # release:
