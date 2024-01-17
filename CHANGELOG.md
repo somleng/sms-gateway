@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.9](https://github.com/somleng/sms-gateway/compare/v1.2.8...v1.2.9) (2024-01-17)
+
+
+### Bug Fixes
+
+* Build docker for amd64 and arm64 ([2717372](https://github.com/somleng/sms-gateway/commit/2717372a60f22cb690b3bf76e0f319d1c9087267))
+
 ## [1.2.8](https://github.com/somleng/sms-gateway/compare/v1.2.7...v1.2.8) (2024-01-17)
 
 
