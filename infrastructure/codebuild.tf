@@ -80,7 +80,7 @@ resource "aws_codebuild_project" "linux_arm64" {
     type = "S3"
     location = data.aws_s3_bucket.artifacts.bucket
     packaging = "NONE"
-    namespace_type = "BUILD_ID"
+    namespace_type = "NONE"
   }
 
   environment {
