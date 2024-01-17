@@ -82,7 +82,7 @@ jobs:
       - name: Download Packages
         if : ${{ matrix.platform == 'arm64' }}
         run: |
-          aws s3 sync s3://ci-artifacts.somleng.org/${{ steps.build-packages.outputs.aws-build-id }}/${{ steps.set-build-parameters.outputs.build-project }}/build build
+          aws s3 sync s3://ci-artifacts.somleng.org/${{ steps.set-build-parameters.outputs.build-project }}/${{ github.sha }}/build build
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3

@@ -82,6 +82,7 @@ resource "aws_codebuild_project" "linux_arm64" {
     packaging = "NONE"
     namespace_type = "NONE"
     override_artifact_name = true
+    path = "${local.codebuild_identifier}-linux-arm64"
   }
 
   environment {
