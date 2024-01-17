@@ -1,5 +1,35 @@
 # Changelog
 
+## 1.0.0 (2024-01-17)
+
+
+### Features
+
+* Expose SMPP Gateway ([#16](https://github.com/somleng/sms-gateway/issues/16)) ([d5df48d](https://github.com/somleng/sms-gateway/commit/d5df48d4381cc7de4440c696385cb93e9a0f02ab))
+* HTTP Server for displaying gateway connection status ([#12](https://github.com/somleng/sms-gateway/issues/12)) ([2e70b37](https://github.com/somleng/sms-gateway/commit/2e70b379681ef9f0aef579743a5e51bd75595bab))
+* Setup Github Action ([#1](https://github.com/somleng/sms-gateway/issues/1)) ([6516c97](https://github.com/somleng/sms-gateway/commit/6516c973b3ad9e9adcbc6dee37927c7bf51d8b12))
+
+
+### Bug Fixes
+
+* Add arm64 packages ([#249](https://github.com/somleng/sms-gateway/issues/249)) ([2346dc3](https://github.com/somleng/sms-gateway/commit/2346dc30d68b7b60e523850ac46ef738648e8d93))
+* Add build for alpine ([#20](https://github.com/somleng/sms-gateway/issues/20)) ([6c9299b](https://github.com/somleng/sms-gateway/commit/6c9299b6190304c1c1f00aa4eed6014a55224b5e))
+* Add instructions for running with Docker ([#26](https://github.com/somleng/sms-gateway/issues/26)) ([8dfbde9](https://github.com/somleng/sms-gateway/commit/8dfbde918da9d7c8de07e7a49e91b5fefb3eaed3))
+* Add link to Somleng Project to README ([f41c758](https://github.com/somleng/sms-gateway/commit/f41c758d149420589e374c8169c8604999ca0396))
+* Add more assets to Github Release ([a94d931](https://github.com/somleng/sms-gateway/commit/a94d931dbf3344b51b19a8730e8db56681f90dbf))
+* Add Somleng Status & Gateway Parameters ([#14](https://github.com/somleng/sms-gateway/issues/14)) ([783ae0f](https://github.com/somleng/sms-gateway/commit/783ae0ff295d0370725ac186effa239f848d4081))
+* Build docker image ([#24](https://github.com/somleng/sms-gateway/issues/24)) ([6296de4](https://github.com/somleng/sms-gateway/commit/6296de4a8aabb12c1f072cda6e1fbf6cf7bde240))
+* delivery receipt parser ([#31](https://github.com/somleng/sms-gateway/issues/31)) ([c369a29](https://github.com/somleng/sms-gateway/commit/c369a293eff6ffc09bb0f90fe9bfc3541f4ba24f))
+* Docker build push ([#28](https://github.com/somleng/sms-gateway/issues/28)) ([8ec87d2](https://github.com/somleng/sms-gateway/commit/8ec87d22e800dd47c3622ec588831c94f0c35691))
+* Github Action build scripts ([15e07ce](https://github.com/somleng/sms-gateway/commit/15e07ce1497578f3149881d4a9c0d2e25f871eb6))
+* github action builds ([91592ac](https://github.com/somleng/sms-gateway/commit/91592ac3ddb6d3d7636fcf333faed2335ebe964e))
+* github action release more files ([1b9cb33](https://github.com/somleng/sms-gateway/commit/1b9cb339a98d5fdf2afd73eba976ecaec4740912))
+* github actions ([dfaa033](https://github.com/somleng/sms-gateway/commit/dfaa033077eebeda63cca4b2761e1ffd0f135dd6))
+* github actions build ([fbf2e7c](https://github.com/somleng/sms-gateway/commit/fbf2e7cbcbf93e7406d7d456dea4709b26ee8c4b))
+* readme ([779e99b](https://github.com/somleng/sms-gateway/commit/779e99bb5221d100d823191d703ecff3d7b5b404))
+* remove `host` option from dummy gateway ([cde3e7c](https://github.com/somleng/sms-gateway/commit/cde3e7cf19cd421fc43b8585f716b02f31a01e02))
+* Use release-please v3 ([#251](https://github.com/somleng/sms-gateway/issues/251)) ([742c435](https://github.com/somleng/sms-gateway/commit/742c435aa674574d654ba62d633c394d74fc003c))
+
 ## [1.2.6](https://github.com/somleng/sms-gateway/compare/v1.2.5...v1.2.6) (2023-02-28)
 
 
