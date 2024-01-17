@@ -53,7 +53,7 @@ resource "aws_iam_role_policy_attachment" "codebuild_ecr" {
 }
 
 resource "aws_codebuild_project" "amd64" {
-  name           = "${local.codebuild_identifier}-amd64"
+  name           = "${local.codebuild_identifier}-linux-amd64"
 
   service_role = aws_iam_role.codebuild.arn
 
@@ -80,7 +80,7 @@ resource "aws_codebuild_project" "amd64" {
 }
 
 resource "aws_codebuild_project" "arm64" {
-  name           = "${local.codebuild_identifier}-arm64"
+  name           = "${local.codebuild_identifier}-linux-arm64"
 
   service_role = aws_iam_role.codebuild.arn
 
