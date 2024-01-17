@@ -45,8 +45,8 @@ jobs:
           role-duration-seconds: 3600
           aws-region: ap-southeast-1
 
-      - name: Set build identifier
-        id: set-build-project
+      - name: Set build parameters
+        id: set-build-parameters
         run: |
           echo "build-project=sms-gateway-${{ matrix.os }}-${{ matrix.platform }}" >> $GITHUB_OUTPUT
 
@@ -55,7 +55,7 @@ jobs:
         if : ${{ matrix.platform == 'arm64' }}
         id: build-packages
         with:
-          project-name: ${{ steps.set-build-project.outputs.build-project }}
+          project-name: ${{ steps.set-build-parameters.outputs.build-project }}
           buildspec-override: |
             version: 0.2
             phases:
@@ -79,8 +79,9 @@ jobs:
                 - build/**/*
 
       - name: Download Packages
+        if : ${{ matrix.platform == 'arm64' }}
         run: |
-          aws s3 sync s3://ci-artifacts.somleng.org/${{ steps.build-packages.outputs.aws-build-id }}/${{ steps.set-build-project.outputs.build-project }}/build build
+          aws s3 sync s3://ci-artifacts.somleng.org/${{ steps.build-packages.outputs.aws-build-id }}/${{ steps.set-build-parameters.outputs.build-project }}/build build
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
