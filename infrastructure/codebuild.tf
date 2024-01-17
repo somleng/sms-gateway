@@ -81,6 +81,7 @@ resource "aws_codebuild_project" "linux_arm64" {
     location = data.aws_s3_bucket.artifacts.bucket
     packaging = "NONE"
     namespace_type = "NONE"
+    override_artifact_name = true
   }
 
   environment {
