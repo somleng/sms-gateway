@@ -3,3 +3,9 @@ build
 npm-debug.log
 .env
 .DS_Store
+
+# terraform
+terraform.tfstate.d/
+.terraform
+terraform.tfstate
+terraform.tfstate.*
