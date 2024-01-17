@@ -6,12 +6,9 @@ set -e
 
 node --experimental-sea-config sea-config.json
 
-if command -v asdf &> /dev/null; then
+if command -v node | grep "asdf" > /dev/null; then
   cp $(asdf which node) build/somleng-sms-gateway
 else
-  echo "here"
-  echo "command -v node outputs: $(command -v node)"
-  echo "which node outputs: $(which node)"
   cp $(command -v node) build/somleng-sms-gateway
 fi
 
@@ -26,8 +23,9 @@ case "$(uname -s)" in
     ;;
 
   Linux)
-    npx postject build/somleng-sms-gateway NODE_SEA_BLOB sea-prep.blob \
-        --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2
+    npx --yes postject build/somleng-sms-gateway NODE_SEA_BLOB build/sea-prep.blob \
+        --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2 \
+        --overwrite
     ;;
 
   *)
