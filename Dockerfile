@@ -3,17 +3,18 @@ FROM alpine:latest as build-image
 ARG APP_ROOT="/app"
 WORKDIR $APP_ROOT
 
-RUN apk update --no-cache && apk upgrade --no-cache && apk add --update --no-cache curl grep wget coreutils unzip
+RUN apk update --no-cache && apk upgrade --no-cache && apk add --update --no-cache curl grep wget coreutils unzip jq
 
-RUN curl -s https://api.github.com/repos/somleng/sms-gateway/releases/latest \
-  | grep "somleng-sms-gateway-alpine-$(arch)-v.*.zip" \
-  | cut -d : -f 2,3 \
+RUN [[ $(arch) = "aarch64" ]] && arch="arm64" || arch="$(arch)" && \
+  curl -s https://api.github.com/repos/somleng/sms-gateway/releases/latest \
+  | jq ".assets.[].browser_download_url" \
+  | grep "somleng-sms-gateway-alpine-${arch}-v.*.zip" \
   | tr -d \" \
   | wget -qi - -O somleng-sms-gateway.zip \
   | echo "downloading..."
 
-RUN unzip somleng-sms-gateway.zip
-RUN rm somleng-sms-gateway.zip
+RUN unzip somleng-sms-gateway.zip && \
+    rm somleng-sms-gateway.zip
 
 # #############################
 

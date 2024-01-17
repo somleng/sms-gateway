@@ -1,0 +1,32 @@
+#!/bin/sh
+
+# From https://nodejs.org/api/single-executable-applications.html#generating-single-executable-preparation-blobs
+
+set -e
+
+node --experimental-sea-config sea-config.json
+
+if command -v asdf &> /dev/null; then
+  cp $(asdf which node) build/somleng-sms-gateway
+else
+  cp $(command -v node) build/somleng-sms-gateway
+fi
+
+case "$(uname -s)" in
+  Darwin)
+    codesign --remove-signature build/somleng-sms-gateway
+    npx postject build/somleng-sms-gateway NODE_SEA_BLOB build/sea-prep.blob \
+        --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2 \
+        --macho-segment-name NODE_SEA
+    codesign --sign - build/somleng-sms-gateway
+    ;;
+
+  Linux)
+    npx postject build/somleng-sms-gateway NODE_SEA_BLOB sea-prep.blob \
+        --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2
+    ;;
+
+  *)
+    echo 'Other OS'
+    ;;
+esac

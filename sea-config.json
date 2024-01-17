@@ -1,0 +1,5 @@
+{
+  "main": "build/somleng-sms-gateway.js",
+  "output": "build/sea-prep.blob",
+  "disableExperimentalSEAWarning": true
+}
