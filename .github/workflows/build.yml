@@ -54,6 +54,8 @@ jobs:
 
       - uses: google-github-actions/release-please-action@v4
         id: release-please
+        with:
+          token: ${{ secrets.SOMLENG_PERSONAL_ACCESS_TOKEN }}
 
       - name: Add assets to Github Release
         if: ${{ steps.release-please.outputs.release_created }}
