@@ -38,6 +38,33 @@ jobs:
             aws-runner: true
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: ".tool-versions"
+          cache: 'npm'
+
+      - name: Set package details
+        id: set-package-details
+        run: |
+          npm ci
+          npm run build
+
+          package_name=$(npm pkg get name | xargs echo)
+          package_version=$(npm pkg get version | xargs echo)
+          full_package_name=$package_name-${{ matrix.os }}-${{ matrix.platform }}-v$package_version.zip
+          echo "package_name=$package_name" >> $GITHUB_OUTPUT
+          echo "package_version=$package_version" >> $GITHUB_OUTPUT
+          echo "full_package_name=$full_package_name" >> $GITHUB_OUTPUT
+
+      - name: Build packages natively
+        if: ${{ !matrix.aws-runner }}
+        run: |
+          npm run dist ${{ steps.set-package-details.outputs.full_package_name }}
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         if: ${{ matrix.aws-runner }}
@@ -77,24 +104,17 @@ jobs:
                     run: |
                       npm ci
                       npm run build
-                      npm run dist
+                      npm run dist ${{ steps.set-package-details.outputs.full_package_name }}
 
             artifacts:
               name: ${{ github.sha }}
               files:
-                - build/**/*
+                - build/*
 
       - name: Download Packages from S3
         if : ${{ matrix.aws-runner }}
         run: |
           aws s3 sync s3://ci-artifacts.somleng.org/${{ steps.set-build-parameters.outputs.build-project }}/${{ github.sha }}/build build
-
-      - name: Build packages natively
-        if: ${{ !matrix.aws-runner }}
-        run: |
-          npm ci
-          npm run build
-          npm run dist
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3

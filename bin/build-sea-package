@@ -6,24 +6,26 @@ set -e
 
 node --experimental-sea-config sea-config.json
 
+package_name="${1:-somleng-sms-gateway}"
+
 if command -v node | grep "asdf" > /dev/null; then
-  cp $(asdf which node) build/somleng-sms-gateway
+  cp $(asdf which node) build/${package_name}
 else
-  cp $(command -v node) build/somleng-sms-gateway
+  cp $(command -v node) build/${package_name}
 fi
 
 case "$(uname -s)" in
   Darwin)
     codesign --remove-signature build/somleng-sms-gateway
-    npx --yes postject build/somleng-sms-gateway NODE_SEA_BLOB build/sea-prep.blob \
+    npx --yes postject build/${package_name} NODE_SEA_BLOB build/sea-prep.blob \
         --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2 \
         --macho-segment-name NODE_SEA \
         --overwrite
-    codesign --sign - build/somleng-sms-gateway
+    codesign --sign - build/${package_name}
     ;;
 
   Linux)
-    npx --yes postject build/somleng-sms-gateway NODE_SEA_BLOB build/sea-prep.blob \
+    npx --yes postject build/${package_name} NODE_SEA_BLOB build/sea-prep.blob \
         --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2 \
         --overwrite
     ;;
