@@ -53,14 +53,12 @@ jobs:
           buildspec-override: |
             version: 0.2
             phases:
+              install:
+                commands:
+                  -n 21
+
               build:
                 steps:
-                  - name: Setup Node
-                    uses: actions/setup-node@v4
-                    with:
-                      node-version-file: ".tool-versions"
-                      cache: 'npm'
-
                   - name: Generate dist
                     id: generate_dist
                     run: |
