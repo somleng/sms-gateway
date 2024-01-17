@@ -43,9 +43,9 @@ jobs:
           - os: macos
             platform: amd64
             runs-on: macos-latest
+        exclude:
           - os: macos
             platform: arm64
-            runs-on: macos-latest-xlarge
 
     steps:
       - name: Checkout
