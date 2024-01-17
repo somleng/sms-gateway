@@ -6,9 +6,9 @@ Somleng SMS Gateway (part of [The Somleng Project](https://github.com/somleng/so
 
 ![Somleng SMS Gateway](assets/diagram.png)
 
-## Downloading and Installing the SMS Gateway
+## Download and Install the SMS Gateway
 
-### Docker
+### Docker (Recommended for most users)
 
 ```sh
 docker pull somleng/sms-gateway
@@ -16,7 +16,15 @@ docker pull somleng/sms-gateway
 
 ### Downloading the binary
 
-Download the [latest release](https://github.com/somleng/sms-gateway/releases) for your operating system.
+Download the [latest release](https://github.com/somleng/sms-gateway/releases) for your operating system. Note that currently we only support Linux.
+
+## Building from source
+
+This will build a new single executable applications binary for your OS.
+
+```sh
+npm run dist
+```
 
 ## Usage
 
