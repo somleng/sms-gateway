@@ -119,7 +119,7 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: build
+          name: ${{ steps.set-package-details.outputs.full_package_name }}
           path: build/${{ steps.set-package-details.outputs.full_package_name }}
           retention-days: 1
 
