@@ -14,13 +14,13 @@ Somleng SMS Gateway (part of [The Somleng Project](https://github.com/somleng/so
 docker pull somleng/sms-gateway
 ```
 
-### Downloading the binary
+### Downloading a pre-built binary
 
-Download the [latest release](https://github.com/somleng/sms-gateway/releases) for your operating system. Note that currently we only support Linux.
+Download the [latest release](https://github.com/somleng/sms-gateway/releases) for your operating system. Note that currently we only have pre-built binaries for Linux.
 
 ## Building from source
 
-This will build a new single executable applications binary for your OS.
+This will build a new single executable application binary for your OS.
 
 ```sh
 npm run dist
