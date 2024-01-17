@@ -34,7 +34,7 @@ jobs:
         platform: [amd64, arm64]
         include:
           - os: linux
-            platform: arm64
+            platform: amd64
             runs-on: ubuntu-latest
           - os: linux
             platform: arm64
