@@ -55,7 +55,7 @@ jobs:
 
           package_name=$(npm pkg get name | xargs echo)
           package_version=$(npm pkg get version | xargs echo)
-          full_package_name=$package_name-${{ matrix.os }}-${{ matrix.platform }}-v$package_version.zip
+          full_package_name=$package_name-${{ matrix.os }}-${{ matrix.platform }}-v$package_version
           echo "package_name=$package_name" >> $GITHUB_OUTPUT
           echo "package_version=$package_version" >> $GITHUB_OUTPUT
           echo "full_package_name=$full_package_name" >> $GITHUB_OUTPUT
@@ -114,10 +114,10 @@ jobs:
       - name: Download Packages from S3
         if : ${{ matrix.aws-runner }}
         run: |
-          aws s3 cp s3://ci-artifacts.somleng.org/${{ steps.set-build-parameters.outputs.build-project }}/${{ github.sha }}/${{ steps.set-package-details.outputs.full_package_name }} build/${{ steps.set-package-details.outputs.full_package_name }}
+          aws s3 cp s3://ci-artifacts.somleng.org/${{ steps.set-build-parameters.outputs.build-project }}/${{ github.sha }}/${{ steps.set-package-details.outputs.full_package_name }} build
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: build
           path: build/${{ steps.set-package-details.outputs.full_package_name }}
