@@ -3,10 +3,10 @@ FROM alpine:latest as build-image
 ARG APP_ROOT="/app"
 WORKDIR $APP_ROOT
 
-RUN apk update && apk upgrade && apk add --update --no-cache curl grep wget coreutils unzip
+RUN apk update --no-cache && apk upgrade --no-cache && apk add --update --no-cache curl grep wget coreutils unzip
 
 RUN curl -s https://api.github.com/repos/somleng/sms-gateway/releases/latest \
-  | grep "somleng-sms-gateway-alpine-x86_64-v.*.zip" \
+  | grep "somleng-sms-gateway-alpine-$(arch)-v.*.zip" \
   | cut -d : -f 2,3 \
   | tr -d \" \
   | wget -qi - -O somleng-sms-gateway.zip \

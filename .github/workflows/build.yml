@@ -63,30 +63,56 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-
           package_version=$(npm pkg get version | xargs echo)
           package_name=${{ steps.generate_dist.outputs.package_name }}
-          alpine_pkg=$package_name-alpine-x86_64-v$package_version.zip
-          linux_pkg=$package_name-linux-x86_64-v$package_version.zip
-          macos_pkg=$package_name-macos-x86_64-v$package_version.zip
-          win_pkg=$package_name-win-x86_64-v$package_version.zip
 
-          cp build/dist/$package_name-alpine $package_name
-          zip $alpine_pkg $package_name
+          alpine_x64_pkg=$package_name-alpine-x86_64-v$package_version.zip
+          alpine_arm64_pkg=$package_name-alpine-arm64-v$package_version.zip
 
-          cp build/dist/$package_name-linux $package_name
-          zip $linux_pkg $package_name
+          linux_x64_pkg=$package_name-linux-x86_64-v$package_version.zip
+          linux_arm64_pkg=$package_name-linux-arm64-v$package_version.zip
 
-          cp build/dist/$package_name-macos $package_name
-          zip $macos_pkg $package_name
+          macos_x64_pkg=$package_name-macos-x86_64-v$package_version.zip
+          macos_arm64_pkg=$package_name-macos-arm64-v$package_version.zip
 
-          cp build/dist/$package_name-win.exe $package_name.exe
-          zip $win_pkg $package_name.exe
+          win_x64_pkg=$package_name-win-x86_64-v$package_version.zip
+          win_arm64_pkg=$package_name-win-arm64-v$package_version.zip
 
-          gh release upload ${{ steps.release-please.outputs.tag_name }} $alpine_pkg
-          gh release upload ${{ steps.release-please.outputs.tag_name }} $linux_pkg
-          gh release upload ${{ steps.release-please.outputs.tag_name }} $macos_pkg
-          gh release upload ${{ steps.release-please.outputs.tag_name }} $win_pkg
+          cp build/dist/$package_name-alpine-x64 $package_name
+          zip $alpine_x64_pkg $package_name
+
+          cp build/dist/$package_name-alpine-arm64 $package_name
+          zip $alpine_arm64_pkg $package_name
+
+          cp build/dist/$package_name-linux-x64 $package_name
+          zip $linux_x64_pkg $package_name
+
+          cp build/dist/$package_name-linux-arm64 $package_name
+          zip $linux_arm64_pkg $package_name
+
+          cp build/dist/$package_name-macos-x64 $package_name
+          zip $macos_x64_pkg $package_name
+
+          cp build/dist/$package_name-macos-arm64 $package_name
+          zip $macos_arm64_pkg $package_name
+
+          cp build/dist/$package_name-win-x64.exe $package_name.exe
+          zip $win_x64_pkg $package_name.exe
+
+          cp build/dist/$package_name-win-arm64.exe $package_name.exe
+          zip $win_arm64_pkg $package_name.exe
+
+          gh release upload ${{ steps.release-please.outputs.tag_name }} $alpine_x64_pkg
+          gh release upload ${{ steps.release-please.outputs.tag_name }} $alpine_arm64_pkg
+
+          gh release upload ${{ steps.release-please.outputs.tag_name }} $linux_x64_pkg
+          gh release upload ${{ steps.release-please.outputs.tag_name }} $linux_arm64_pkg
+
+          gh release upload ${{ steps.release-please.outputs.tag_name }} $macos_x64_pkg
+          gh release upload ${{ steps.release-please.outputs.tag_name }} $macos_arm64_pkg
+
+          gh release upload ${{ steps.release-please.outputs.tag_name }} $win_x64_pkg
+          gh release upload ${{ steps.release-please.outputs.tag_name }} $win_arm64_pkg
 
       - name: Log in to Docker Hub
         if: ${{ steps.release-please.outputs.release_created }}
