@@ -2,34 +2,32 @@ on: push
 name: Build
 
 jobs:
-  build:
-    name: Build
-    runs-on: ubuntu-latest
+  # build:
+  #   name: Build
+  #   runs-on: ubuntu-latest
 
-    env:
-      CI: true
+  #   env:
+  #     CI: true
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: ".tool-versions"
-          cache: 'npm'
+  #     - name: Setup Node
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version-file: ".tool-versions"
+  #         cache: 'npm'
 
-      - name: Setup dependencies
-        run: npm ci
+  #     - name: Setup dependencies
+  #       run: npm ci
 
-      - name: Run Tests
-        run: npm run test
+  #     - name: Run Tests
+  #       run: npm run test
 
   build-packages:
     name: Build Packages
     runs-on: ubuntu-latest
-    needs:
-      - build
 
     steps:
       - name: Checkout
@@ -48,124 +46,124 @@ jobs:
           npm run build
           npm run dist
 
-  release:
-    name: Release
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    needs:
-      - build
+  # release:
+  #   name: Release
+  #   runs-on: ubuntu-latest
+  #   if: github.ref == 'refs/heads/main'
+  #   needs:
+  #     - build
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: ".tool-versions"
-          cache: 'npm'
+  #     - name: Setup Node
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version-file: ".tool-versions"
+  #         cache: 'npm'
 
-      - name: Generate dist
-        id: generate_dist
-        run: |
-          npm ci
-          npm run build
-          npm run dist
+  #     - name: Generate dist
+  #       id: generate_dist
+  #       run: |
+  #         npm ci
+  #         npm run build
+  #         npm run dist
 
-          package_name=$(npm pkg get name | xargs echo)
-          echo "package_name=$package_name" >> $GITHUB_OUTPUT
+  #         package_name=$(npm pkg get name | xargs echo)
+  #         echo "package_name=$package_name" >> $GITHUB_OUTPUT
 
-      - uses: google-github-actions/release-please-action@v4
-        id: release-please
-        with:
-          token: ${{ secrets.SOMLENG_PERSONAL_ACCESS_TOKEN }}
+  #     - uses: google-github-actions/release-please-action@v4
+  #       id: release-please
+  #       with:
+  #         token: ${{ secrets.SOMLENG_PERSONAL_ACCESS_TOKEN }}
 
-      - name: Add assets to Github Release
-        if: ${{ steps.release-please.outputs.release_created }}
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          package_version=$(npm pkg get version | xargs echo)
-          package_name=${{ steps.generate_dist.outputs.package_name }}
+  #     - name: Add assets to Github Release
+  #       if: ${{ steps.release-please.outputs.release_created }}
+  #       env:
+  #         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #       run: |
+  #         package_version=$(npm pkg get version | xargs echo)
+  #         package_name=${{ steps.generate_dist.outputs.package_name }}
 
-          alpine_x64_pkg=$package_name-alpine-x86_64-v$package_version.zip
-          alpine_arm64_pkg=$package_name-alpine-arm64-v$package_version.zip
+  #         alpine_x64_pkg=$package_name-alpine-x86_64-v$package_version.zip
+  #         alpine_arm64_pkg=$package_name-alpine-arm64-v$package_version.zip
 
-          linux_x64_pkg=$package_name-linux-x86_64-v$package_version.zip
-          linux_arm64_pkg=$package_name-linux-arm64-v$package_version.zip
+  #         linux_x64_pkg=$package_name-linux-x86_64-v$package_version.zip
+  #         linux_arm64_pkg=$package_name-linux-arm64-v$package_version.zip
 
-          macos_x64_pkg=$package_name-macos-x86_64-v$package_version.zip
-          macos_arm64_pkg=$package_name-macos-arm64-v$package_version.zip
+  #         macos_x64_pkg=$package_name-macos-x86_64-v$package_version.zip
+  #         macos_arm64_pkg=$package_name-macos-arm64-v$package_version.zip
 
-          win_x64_pkg=$package_name-win-x86_64-v$package_version.zip
-          win_arm64_pkg=$package_name-win-arm64-v$package_version.zip
+  #         win_x64_pkg=$package_name-win-x86_64-v$package_version.zip
+  #         win_arm64_pkg=$package_name-win-arm64-v$package_version.zip
 
-          cp build/dist/$package_name-alpine-x64 $package_name
-          zip $alpine_x64_pkg $package_name
+  #         cp build/dist/$package_name-alpine-x64 $package_name
+  #         zip $alpine_x64_pkg $package_name
 
-          cp build/dist/$package_name-alpine-arm64 $package_name
-          zip $alpine_arm64_pkg $package_name
+  #         cp build/dist/$package_name-alpine-arm64 $package_name
+  #         zip $alpine_arm64_pkg $package_name
 
-          cp build/dist/$package_name-linux-x64 $package_name
-          zip $linux_x64_pkg $package_name
+  #         cp build/dist/$package_name-linux-x64 $package_name
+  #         zip $linux_x64_pkg $package_name
 
-          cp build/dist/$package_name-linux-arm64 $package_name
-          zip $linux_arm64_pkg $package_name
+  #         cp build/dist/$package_name-linux-arm64 $package_name
+  #         zip $linux_arm64_pkg $package_name
 
-          cp build/dist/$package_name-macos-x64 $package_name
-          zip $macos_x64_pkg $package_name
+  #         cp build/dist/$package_name-macos-x64 $package_name
+  #         zip $macos_x64_pkg $package_name
 
-          cp build/dist/$package_name-macos-arm64 $package_name
-          zip $macos_arm64_pkg $package_name
+  #         cp build/dist/$package_name-macos-arm64 $package_name
+  #         zip $macos_arm64_pkg $package_name
 
-          cp build/dist/$package_name-win-x64.exe $package_name.exe
-          zip $win_x64_pkg $package_name.exe
+  #         cp build/dist/$package_name-win-x64.exe $package_name.exe
+  #         zip $win_x64_pkg $package_name.exe
 
-          cp build/dist/$package_name-win-arm64.exe $package_name.exe
-          zip $win_arm64_pkg $package_name.exe
+  #         cp build/dist/$package_name-win-arm64.exe $package_name.exe
+  #         zip $win_arm64_pkg $package_name.exe
 
-          gh release upload ${{ steps.release-please.outputs.tag_name }} $alpine_x64_pkg
-          gh release upload ${{ steps.release-please.outputs.tag_name }} $alpine_arm64_pkg
+  #         gh release upload ${{ steps.release-please.outputs.tag_name }} $alpine_x64_pkg
+  #         gh release upload ${{ steps.release-please.outputs.tag_name }} $alpine_arm64_pkg
 
-          gh release upload ${{ steps.release-please.outputs.tag_name }} $linux_x64_pkg
-          gh release upload ${{ steps.release-please.outputs.tag_name }} $linux_arm64_pkg
+  #         gh release upload ${{ steps.release-please.outputs.tag_name }} $linux_x64_pkg
+  #         gh release upload ${{ steps.release-please.outputs.tag_name }} $linux_arm64_pkg
 
-          gh release upload ${{ steps.release-please.outputs.tag_name }} $macos_x64_pkg
-          gh release upload ${{ steps.release-please.outputs.tag_name }} $macos_arm64_pkg
+  #         gh release upload ${{ steps.release-please.outputs.tag_name }} $macos_x64_pkg
+  #         gh release upload ${{ steps.release-please.outputs.tag_name }} $macos_arm64_pkg
 
-          gh release upload ${{ steps.release-please.outputs.tag_name }} $win_x64_pkg
-          gh release upload ${{ steps.release-please.outputs.tag_name }} $win_arm64_pkg
+  #         gh release upload ${{ steps.release-please.outputs.tag_name }} $win_x64_pkg
+  #         gh release upload ${{ steps.release-please.outputs.tag_name }} $win_arm64_pkg
 
-      - name: Log in to Docker Hub
-        if: ${{ steps.release-please.outputs.release_created }}
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+  #     - name: Log in to Docker Hub
+  #       if: ${{ steps.release-please.outputs.release_created }}
+  #       uses: docker/login-action@v3
+  #       with:
+  #         username: ${{ secrets.DOCKERHUB_USERNAME }}
+  #         password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: Extract metadata (tags, labels) for Docker
-        if: ${{ steps.release-please.outputs.release_created }}
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: somleng/sms-gateway
-          tags: |
-            # set latest tag for main branch
-            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
-            type=raw,value=${{ steps.release-please.outputs.tag_name }}
+  #     - name: Extract metadata (tags, labels) for Docker
+  #       if: ${{ steps.release-please.outputs.release_created }}
+  #       id: meta
+  #       uses: docker/metadata-action@v5
+  #       with:
+  #         images: somleng/sms-gateway
+  #         tags: |
+  #           # set latest tag for main branch
+  #           type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
+  #           type=raw,value=${{ steps.release-please.outputs.tag_name }}
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+  #     - name: Set up QEMU
+  #       uses: docker/setup-qemu-action@v3
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+  #     - name: Set up Docker Buildx
+  #       uses: docker/setup-buildx-action@v3
 
-      - name: Build and push Docker image
-        if: ${{ steps.release-please.outputs.release_created }}
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          platforms: linux/amd64,linux/arm64
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+  #     - name: Build and push Docker image
+  #       if: ${{ steps.release-please.outputs.release_created }}
+  #       uses: docker/build-push-action@v5
+  #       with:
+  #         context: .
+  #         push: true
+  #         platforms: linux/amd64,linux/arm64
+  #         tags: ${{ steps.meta.outputs.tags }}
+  #         labels: ${{ steps.meta.outputs.labels }}
