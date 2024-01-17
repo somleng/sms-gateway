@@ -54,11 +54,16 @@ jobs:
             version: 0.2
             phases:
               install:
+                runtime-versions:
+                  nodejs: 18.x
                 commands:
                   -n 21
 
               build:
                 steps:
+                  - name: Display node version
+                    run: node -v
+
                   - name: Generate dist
                     id: generate_dist
                     run: |
