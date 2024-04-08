@@ -9,7 +9,7 @@ RUN apt-get update -qq && \
 RUN curl -s https://api.github.com/repos/somleng/sms-gateway/releases/latest \
   | jq ".assets[].browser_download_url" \
   | grep "somleng-sms-gateway-linux-$(arch)-v.*.zip" \
-  | tr -d \" \
+  | tr -d '"' \
   | wget -qi - -O somleng-sms-gateway.zip \
   | echo "downloading..."
 
