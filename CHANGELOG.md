@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.12](https://github.com/somleng/sms-gateway/compare/v1.2.11...v1.2.12) (2024-04-08)
+
+
+### Bug Fixes
+
+* Handle smpp deliver sm resp ([#311](https://github.com/somleng/sms-gateway/issues/311)) ([01e30fd](https://github.com/somleng/sms-gateway/commit/01e30fdc416355fcbabbc560f47b5ff43976a9df))
+
 ## [1.2.11](https://github.com/somleng/sms-gateway/compare/v1.2.10...v1.2.11) (2024-01-17)
 
 
