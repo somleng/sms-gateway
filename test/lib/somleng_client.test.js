@@ -18,7 +18,7 @@ describe(SomlengClient, () => {
       channel: 1,
       from: "85510888888",
       to: "85510777777",
-      body: "this is a testing",
+      body: "this is a test",
     };
 
     client.onNewMessage((message) => {
