@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.13](https://github.com/somleng/sms-gateway/compare/v1.2.12...v1.2.13) (2024-04-11)
+
+
+### Bug Fixes
+
+* Use actioncable-v1-ext for improved data consistency ([#315](https://github.com/somleng/sms-gateway/issues/315)) ([baa0688](https://github.com/somleng/sms-gateway/commit/baa0688fca1f696daaccd917d3e560b8329f073d))
+
 ## [1.2.12](https://github.com/somleng/sms-gateway/compare/v1.2.11...v1.2.12) (2024-04-08)
 
 
