@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.14](https://github.com/somleng/sms-gateway/compare/v1.2.13...v1.2.14) (2024-04-13)
+
+
+### Bug Fixes
+
+* Deploy to GH Container Registry ([#320](https://github.com/somleng/sms-gateway/issues/320)) ([246ca16](https://github.com/somleng/sms-gateway/commit/246ca16f5c0bd74a5a4451cdb9e881a4f045481e))
+
 ## [1.2.13](https://github.com/somleng/sms-gateway/compare/v1.2.12...v1.2.13) (2024-04-11)
 
 
