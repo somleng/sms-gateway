@@ -76,7 +76,7 @@ async function main() {
     format: format.combine(
       format.label({ label: "Somleng SMS Gateway" }),
       format.timestamp(),
-      format.json()
+      format.json(),
     ),
     transports: [new transports.Console()],
   });
@@ -124,7 +124,7 @@ async function main() {
       logger.debug(
         "notifyDeliveryReceipt: ",
         outboundQueue.get(deliveryReceipt.messageId).messageId,
-        deliveryReceipt
+        deliveryReceipt,
       );
 
       await client.notifyDeliveryReceipt({

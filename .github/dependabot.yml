@@ -4,6 +4,10 @@ updates:
     directory: '/'
     schedule:
       interval: 'daily'
+    ignore:
+      # ignore until https://github.com/airbnb/javascript/issues/2961 is fixed
+      - dependency-name: "eslint"
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: 'github-actions'
     directory: '/'
