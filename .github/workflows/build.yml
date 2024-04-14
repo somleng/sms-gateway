@@ -31,6 +31,7 @@ jobs:
     strategy:
       matrix:
         os: [linux, alpine]
+        platform: [amd64, arm64]
 
     steps:
       - name: Checkout
@@ -41,12 +42,19 @@ jobs:
 
       - name: Build Packages
         run: |
-          docker buildx build --output type=local,dest=build --platform linux/arm64 --target export-${{ matrix.os }} .
+          docker buildx build --output type=local,dest=build --platform linux/${{ matrix.platform }} --target export-${{ matrix.os }} .
 
       - name: Debug artifacts
         run: |
           ls -lat
           ls -lat build
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: somleng-sms-gateway
+          path: build/
+          retention-days: 1
 
   release:
     name: Release
