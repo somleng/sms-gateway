@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.16](https://github.com/somleng/sms-gateway/compare/v1.2.15...v1.2.16) (2024-04-14)
+
+
+### Bug Fixes
+
+* Use Docker to build binaries ([#324](https://github.com/somleng/sms-gateway/issues/324)) ([52640c8](https://github.com/somleng/sms-gateway/commit/52640c8448fe57e97a7e06cdbbf77244babbbde7))
+
 ## [1.2.15](https://github.com/somleng/sms-gateway/compare/v1.2.14...v1.2.15) (2024-04-13)
 
 
