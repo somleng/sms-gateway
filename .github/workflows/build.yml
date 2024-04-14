@@ -53,6 +53,10 @@ jobs:
           target: "export-${{matrix.os}}"
           output: type=local,dest=build
 
+      - name: Debug artifacts
+        run: |
+          ls -lat build
+
   release:
     name: Release
     runs-on: ubuntu-latest
