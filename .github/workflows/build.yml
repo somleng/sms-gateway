@@ -30,8 +30,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [linux, alpine]
+        os: [linux]
         platform: [amd64, arm64]
+
     outputs:
       package_name: ${{ steps.get-package-name.outputs.package_name }}
       package_version: ${{ steps.get-package-name.outputs.package_version }}
@@ -84,7 +85,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          declare -a oss=("alpine" "linux")
+          declare -a oss=("linux")
           declare -a platforms=("x86_64" "aarch64")
 
           for os in "${oss[@]}"
@@ -98,8 +99,6 @@ jobs:
               gh release upload v${{ needs.build-packages-test.outputs.package_version }} $pkg
             done
           done
-
-          ls -lath
 
   release:
     name: Release

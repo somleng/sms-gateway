@@ -25,21 +25,12 @@ RUN package_name=$(cat build/package_name.txt) && \
 FROM scratch AS export-linux
 COPY --from=build-linux /src/sms-gateway/build/ /
 
-FROM public.ecr.aws/docker/library/node:current as build-alpine
-COPY --from=build-base /src /src
-WORKDIR /src/sms-gateway
-RUN package_name=$(cat build/package_name.txt) && \
-    package_version=$(cat build/package_version.txt) && \
-    full_package_name=$package_name-alpine-$(arch)-v$package_version && \
-    echo "$full_package_name" > build/full_package_name.txt && \
-    npm run dist $full_package_name
-
-FROM scratch AS export-alpine
-COPY --from=build-alpine /src/sms-gateway/build/ /
-
 FROM public.ecr.aws/docker/library/alpine:latest as build
-RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y curl grep wget ca-certificates unzip jq
+ARG APP_ROOT="/app"
+WORKDIR $APP_ROOT
+RUN apk update --no-cache && \
+    apk upgrade --no-cache && \
+    apk add --update --no-cache curl grep wget ca-certificates unzip jq
 
 RUN curl -s https://api.github.com/repos/somleng/sms-gateway/releases/latest \
   | jq ".assets[].browser_download_url" \
@@ -52,11 +43,10 @@ RUN unzip somleng-sms-gateway.zip && \
     rm somleng-sms-gateway.zip && \
     chmod +x somleng-sms-gateway
 
-FROM public.ecr.aws/docker/library/alpine:latest
-
+FROM public.ecr.aws/docker/library/debian:bookworm-slim
 ARG APP_ROOT="/app"
 WORKDIR $APP_ROOT
-ENV PATH "$PATH:$APP_ROOT"
 
-COPY --link --from=build-image $APP_ROOT $APP_ROOT
+ENV PATH "$PATH:$APP_ROOT"
+COPY --link --from=build $APP_ROOT $APP_ROOT
 CMD ["somleng-sms-gateway"]
