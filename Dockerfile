@@ -13,7 +13,7 @@ RUN git clone https://github.com/somleng/sms-gateway.git && \
     echo "$package_version" > package_version.txt
 
 FROM public.ecr.aws/docker/library/node:current as build-linux
-COPY --link --from=build-base /src /src
+COPY --from=build-base /src /src
 WORKDIR /src/sms-gateway
 RUN package_name=$(cat package_name.txt) && \
     package_version=$(cat package_version.txt) && \
@@ -21,10 +21,10 @@ RUN package_name=$(cat package_name.txt) && \
     npm run dist $full_package_name
 
 FROM scratch AS export-linux
-COPY --link --from=build-linux /src/sms-gateway/build/* .
+COPY --from=build-linux /src/sms-gateway/build/* .
 
 FROM public.ecr.aws/docker/library/node:current as build-alpine
-COPY --link --from=build-base /src /src
+COPY --from=build-base /src /src
 WORKDIR /src/sms-gateway
 RUN package_name=$(cat package_name.txt) && \
     package_version=$(cat package_version.txt) && \
@@ -32,7 +32,7 @@ RUN package_name=$(cat package_name.txt) && \
     npm run dist $full_package_name
 
 FROM scratch AS export-alpine
-COPY --link --from=build-alpine /src/sms-gateway/build/* .
+COPY --from=build-alpine /src/sms-gateway/build/* .
 
 FROM public.ecr.aws/docker/library/alpine:latest as build
 RUN apt-get update -qq && \
