@@ -85,21 +85,17 @@ jobs:
           ls -lath build
 
           declare -a oss=("linux" "alpine")
-          declare -a platforms=("amd64" "arm64")
+          declare -a platforms=("x86_64" "aarch64")
 
           for os in "${oss[@]}"
           do
             for platform in "${platforms[@]}"
             do
-              if [[ $platform == "amd64" ]]; then
-                pkg_platform_identifier=x86_64
-              elif [[ $platform == "arm64" ]]; then
-                pkg_platform_identifier=aarch64
-              fi
-
-              pkg="${{ needs.build-packages-test.outputs.package_name }}-$os-$pkg_platform_identifier-v${{ needs.build-packages-test.outputs.package_version }}.zip"
+              pkg="${{ needs.build-packages-test.outputs.package_name }}-$os-$platform-v${{ needs.build-packages-test.outputs.package_version }}.zip"
               cp build/${{ needs.build-packages-test.outputs.package_name }}-$os-$platform-v${{ needs.build-packages-test.outputs.package_version }} ${{ needs.build-packages-test.outputs.package_name }}
               zip $pkg ${{ needs.build-packages-test.outputs.package_name }}
+
+              gh release upload v${{ needs.build-packages-test.outputs.package_version }} $pkg
             done
           done
 
