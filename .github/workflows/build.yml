@@ -44,7 +44,7 @@ jobs:
 
       - name: Build Packages
         run: |
-          docker buildx buildx build --output type=local,dest=build --platform linux/amd64,linux/arm64 --target export-${{ matrix.os }} .
+          docker buildx build --output type=local,dest=build --platform linux/amd64,linux/arm64 --target export-${{ matrix.os }} .
 
       - name: Debug artifacts
         run: |
