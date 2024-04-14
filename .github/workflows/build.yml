@@ -48,7 +48,7 @@ jobs:
     name: Build Packages
     runs-on: ubuntu-latest
     needs:
-      - build
+      - release
     strategy:
       # Note Alpine isn't supported: https://nodejs.org/api/single-executable-applications.html#platform-support
       matrix:
