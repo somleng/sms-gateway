@@ -43,13 +43,8 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Build Packages
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: false
-          platforms: linux/amd64,linux/arm64
-          target: "export-${{matrix.os}}"
-          outputs: "type=local,dest=."
+        run: |
+          docker buildx buildx build --output type=local,dest=build --platform linux/amd64,linux/arm64 --target export-${{ matrix.os }} .
 
       - name: Debug artifacts
         run: |
