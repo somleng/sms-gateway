@@ -46,128 +46,56 @@ jobs:
 
   build-packages:
     name: Build Packages
+    runs-on: ubuntu-latest
     needs:
       - release
-    runs-on: ${{ matrix.runs-on }}
-    if: ${{ needs.release.outputs.release_created }}
-    outputs:
-      package_name: ${{ steps.set-package-details.outputs.package_name }}
-      package_version: ${{ steps.set-package-details.outputs.package_version }}
     strategy:
+      # Note Alpine isn't supported: https://nodejs.org/api/single-executable-applications.html#platform-support
       matrix:
-        os: ["linux"]
+        os: [linux]
         platform: [amd64, arm64]
-        include:
-          - os: linux
-            platform: amd64
-            runs-on: ubuntu-latest
-          - os: linux
-            platform: arm64
-            runs-on: ubuntu-latest
-            aws-runner: true
+
+    outputs:
+      package_name: ${{ steps.get-package-name.outputs.package_name }}
+      package_version: ${{ steps.get-package-name.outputs.package_version }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: ".tool-versions"
-          cache: 'npm'
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-      - name: Set package details
-        id: set-package-details
+      - name: Build Packages
         run: |
-          npm ci
-          npm run build
+          docker buildx build --output type=local,dest=build --platform linux/${{ matrix.platform }} --target export-${{ matrix.os }} .
 
-          package_name=$(npm pkg get name | xargs echo)
-          package_version=$(npm pkg get version | xargs echo)
-          full_package_name=$package_name-${{ matrix.os }}-${{ matrix.platform }}-v$package_version
-          echo "package_name=$package_name" >> $GITHUB_OUTPUT
+      - name: Get package name
+        id: get-package-name
+        run: |
+          package_version=$(cat build/package_version.txt)
+          package_name=$(cat build/package_name.txt)
+          full_package_name=$(cat build/full_package_name.txt)
           echo "package_version=$package_version" >> $GITHUB_OUTPUT
+          echo "package_name=$package_name" >> $GITHUB_OUTPUT
           echo "full_package_name=$full_package_name" >> $GITHUB_OUTPUT
-
-      - name: Build packages natively
-        if: ${{ !matrix.aws-runner }}
-        run: |
-          npm run dist ${{ steps.set-package-details.outputs.full_package_name }}
-
-      - name: Set build parameters
-        if: ${{ matrix.aws-runner }}
-        id: set-build-parameters
-        run: |
-          echo "build-project=sms-gateway-${{ matrix.os }}-${{ matrix.platform }}" >> $GITHUB_OUTPUT
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        if: ${{ matrix.aws-runner }}
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
-          role-skip-session-tagging: true
-          role-duration-seconds: 3600
-          aws-region: ap-southeast-1
-
-      - name: Build packages on AWS
-        if: ${{ matrix.aws-runner }}
-        uses: aws-actions/aws-codebuild-run-build@v1
-        id: build-packages
-        with:
-          project-name: ${{ steps.set-build-parameters.outputs.build-project }}
-          buildspec-override: |
-            version: 0.2
-            phases:
-              install:
-                runtime-versions:
-                  nodejs: 18.x
-                commands:
-                  - n 21
-
-              build:
-                steps:
-                  - name: Generate dist
-                    id: generate_dist
-                    run: |
-                      npm ci
-                      npm run build
-                      npm run dist ${{ steps.set-package-details.outputs.full_package_name }}
-
-            artifacts:
-              name: ${{ github.sha }}
-              files:
-                - build/*
-
-      - name: Download Packages from S3
-        if : ${{ matrix.aws-runner }}
-        run: |
-          aws s3 cp s3://ci-artifacts.somleng.org/${{ steps.set-build-parameters.outputs.build-project }}/${{ github.sha }}/build/${{ steps.set-package-details.outputs.full_package_name }} build
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ steps.set-package-details.outputs.full_package_name }}
-          path: build/${{ steps.set-package-details.outputs.full_package_name }}
+          name: ${{ steps.get-package-name.outputs.full_package_name }}
+          path: build/${{ steps.get-package-name.outputs.full_package_name }}
           retention-days: 1
 
   upload-packages:
     name: Upload Packages
+    runs-on: ubuntu-latest
     needs:
       - build-packages
       - release
-    runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: ".tool-versions"
-          cache: 'npm'
 
       - name: Download All Artifacts
         uses: actions/download-artifact@v4
@@ -180,17 +108,20 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          linux_x64_pkg="${{ needs.build-packages.outputs.package_name }}-linux-x86_64-v${{ needs.build-packages.outputs.package_version }}.zip"
-          linux_aarch64_pkg="${{ needs.build-packages.outputs.package_name }}-linux-aarch64-v${{ needs.build-packages.outputs.package_version }}.zip"
+          declare -a oss=("linux")
+          declare -a platforms=("x86_64" "aarch64")
 
-          cp build/${{ needs.build-packages.outputs.package_name }}-linux-amd64-v${{ needs.build-packages.outputs.package_version }} ${{ needs.build-packages.outputs.package_name }}
-          zip $linux_x64_pkg ${{ needs.build-packages.outputs.package_name }}
+          for os in "${oss[@]}"
+          do
+            for platform in "${platforms[@]}"
+            do
+              pkg="${{ needs.build-packages.outputs.package_name }}-$os-$platform-v${{ needs.build-packages.outputs.package_version }}.zip"
+              cp build/${{ needs.build-packages.outputs.package_name }}-$os-$platform-v${{ needs.build-packages.outputs.package_version }} ${{ needs.build-packages.outputs.package_name }}
+              zip $pkg ${{ needs.build-packages.outputs.package_name }}
 
-          cp build/${{ needs.build-packages.outputs.package_name }}-linux-arm64-v${{ needs.build-packages.outputs.package_version }} ${{ needs.build-packages.outputs.package_name }}
-          zip $linux_aarch64_pkg ${{ needs.build-packages.outputs.package_name }}
-
-          gh release upload ${{ needs.release.outputs.release_tag }} $linux_x64_pkg
-          gh release upload ${{ needs.release.outputs.release_tag }} $linux_aarch64_pkg
+              gh release upload ${{ needs.release.outputs.release_tag }} $pkg
+            done
+          done
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
@@ -216,9 +147,6 @@ jobs:
             # set latest tag for main branch
             type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
             type=raw,value=${{ needs.release.outputs.release_tag }}
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
