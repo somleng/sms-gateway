@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.16](https://github.com/somleng/sms-gateway/compare/v1.2.15...v1.2.16) (2024-04-14)
+
+
+### Bug Fixes
+
+* Only upload artifacts after a release ([c65076d](https://github.com/somleng/sms-gateway/commit/c65076d4fdcf4e643771367509aedc63cebf0bd7))
+* Use Docker to build binaries ([#324](https://github.com/somleng/sms-gateway/issues/324)) ([52640c8](https://github.com/somleng/sms-gateway/commit/52640c8448fe57e97a7e06cdbbf77244babbbde7))
+
 ## [1.2.15](https://github.com/somleng/sms-gateway/compare/v1.2.14...v1.2.15) (2024-04-13)
 
 
