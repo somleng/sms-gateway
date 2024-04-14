@@ -20,6 +20,8 @@ RUN package_name=$(cat package_name.txt) && \
     full_package_name=$package_name-linux-$(arch)-v$package_version && \
     npm run dist $full_package_name
 
+RUN ls -lat build
+
 FROM scratch AS export-linux
 COPY --from=build-linux /src/sms-gateway/build/* .
 
