@@ -25,6 +25,34 @@ jobs:
       - name: Run Tests
         run: npm run test
 
+  build-packages-test:
+    name: Test Build Packages
+    runs-on: ubuntu-latest
+    needs:
+      - build
+    strategy:
+      matrix:
+        os: [linux, alpine]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Packages
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: false
+          platforms: linux/amd64,linux/arm64
+          target: "export-${{matrix.os}}"
+          output: type=local,dest=build
+
   release:
     name: Release
     runs-on: ubuntu-latest
@@ -48,22 +76,18 @@ jobs:
     name: Build Packages
     needs:
       - release
-    runs-on: ${{ matrix.runs-on }}
+    runs-on: ubuntu-latest
     if: ${{ needs.release.outputs.release_created }}
     outputs:
       package_name: ${{ steps.set-package-details.outputs.package_name }}
       package_version: ${{ steps.set-package-details.outputs.package_version }}
     strategy:
       matrix:
-        os: ["linux"]
+        os: [linux, alpine]
         platform: [amd64, arm64]
         include:
           - os: linux
-            platform: amd64
-            runs-on: ubuntu-latest
-          - os: linux
             platform: arm64
-            runs-on: ubuntu-latest
             aws-runner: true
 
     steps:
@@ -90,7 +114,7 @@ jobs:
           echo "full_package_name=$full_package_name" >> $GITHUB_OUTPUT
 
       - name: Build packages natively
-        if: ${{ !matrix.aws-runner }}
+        if: ${{ (!matrix.aws-runner) && (matrix.os == 'linux') }}
         run: |
           npm run dist ${{ steps.set-package-details.outputs.full_package_name }}
 
