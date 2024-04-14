@@ -20,10 +20,8 @@ RUN package_name=$(cat package_name.txt) && \
     full_package_name=$package_name-linux-$(arch)-v$package_version && \
     npm run dist $full_package_name
 
-RUN ls -lat build
-
 FROM scratch AS export-linux
-COPY --from=build-linux /src/sms-gateway/build/* .
+COPY --from=build-linux /src/sms-gateway/build/ .
 
 FROM public.ecr.aws/docker/library/node:current as build-alpine
 COPY --from=build-base /src /src
@@ -34,7 +32,7 @@ RUN package_name=$(cat package_name.txt) && \
     npm run dist $full_package_name
 
 FROM scratch AS export-alpine
-COPY --from=build-alpine /src/sms-gateway/build/* .
+COPY --from=build-alpine /src/sms-gateway/build/ .
 
 FROM public.ecr.aws/docker/library/alpine:latest as build
 RUN apt-get update -qq && \
