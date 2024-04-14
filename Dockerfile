@@ -55,5 +55,5 @@ ARG APP_ROOT="/app"
 WORKDIR $APP_ROOT
 ENV PATH "$PATH:$APP_ROOT"
 
-COPY --from=build $APP_ROOT $APP_ROOT
+COPY --link --from=build-image $APP_ROOT $APP_ROOT
 CMD ["somleng-sms-gateway"]

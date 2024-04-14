@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.15](https://github.com/somleng/sms-gateway/compare/v1.2.14...v1.2.15) (2024-04-13)
+
+
+### Bug Fixes
+
+* Improve Dockerfile ([#322](https://github.com/somleng/sms-gateway/issues/322)) ([cfd9c17](https://github.com/somleng/sms-gateway/commit/cfd9c178e2e4c3a86c07cfa9828f11f59332681c))
+
 ## [1.2.14](https://github.com/somleng/sms-gateway/compare/v1.2.13...v1.2.14) (2024-04-13)
 
 
