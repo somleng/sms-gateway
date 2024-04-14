@@ -84,10 +84,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          ls -lath
-          ls -lath build
-
-          declare -a oss=("linux" "alpine")
+          declare -a oss=("alpine" "linux")
           declare -a platforms=("x86_64" "aarch64")
 
           for os in "${oss[@]}"
