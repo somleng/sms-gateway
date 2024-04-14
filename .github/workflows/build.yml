@@ -45,15 +45,17 @@ jobs:
           docker buildx build --output type=local,dest=build --platform linux/${{ matrix.platform }} --target export-${{ matrix.os }} .
 
       - name: Debug artifacts
+        id: get-package-name
         run: |
-          ls -lat
           ls -lat build
+          full_package_name=$(cat build/full_package_name.txt)
+          echo "full_package_name=$full_package_name" >> $GITHUB_OUTPUT
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: somleng-sms-gateway
-          path: build/
+          name: ${{ steps.get-package-name.outputs.full_package_name }}
+          path: build/${{ steps.get-package-name.outputs.full_package_name }}
           retention-days: 1
 
   release:
