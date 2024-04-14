@@ -36,15 +36,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
       - name: Build Packages
         run: |
-          docker buildx build --output type=local,dest=build --platform linux/amd64,linux/arm64 --target export-${{ matrix.os }} .
+          docker buildx build --output type=local,dest=build --platform linux/amd64 --target export-${{ matrix.os }} .
 
       - name: Debug artifacts
         run: |
