@@ -51,10 +51,11 @@ jobs:
           push: false
           platforms: linux/amd64,linux/arm64
           target: "export-${{matrix.os}}"
-          output: type=local,dest=build
+          outputs: "type=local,dest=build"
 
       - name: Debug artifacts
         run: |
+          ls -lat
           ls -lat build
 
   release:
