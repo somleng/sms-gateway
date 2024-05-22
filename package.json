@@ -15,7 +15,7 @@
   "author": "Somleng Team",
   "license": "MIT",
   "dependencies": {
-    "@anycable/core": "^0.8.3",
+    "@anycable/core": "^0.9.0",
     "@sentry/node": "^8.3.0",
     "@sentry/tracing": "^7.114.0",
     "commander": "^12.1.0",
