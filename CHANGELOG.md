@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.17](https://github.com/somleng/sms-gateway/compare/v1.2.16...v1.2.17) (2024-08-21)
+
+
+### Bug Fixes
+
+* Handle rejected delivery receipt ([#388](https://github.com/somleng/sms-gateway/issues/388)) ([cd4d29c](https://github.com/somleng/sms-gateway/commit/cd4d29c2771d852ff4d388f524a69e299405136e))
+
 ## [1.2.16](https://github.com/somleng/sms-gateway/compare/v1.2.15...v1.2.16) (2024-04-14)
 
 
