@@ -1,4 +1,4 @@
-FROM public.ecr.aws/docker/library/node:current as build-base
+FROM public.ecr.aws/docker/library/node:current AS build-base
 WORKDIR "/src"
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y git
