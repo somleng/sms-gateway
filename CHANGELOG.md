@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.19](https://github.com/somleng/sms-gateway/compare/v1.2.18...v1.2.19) (2024-11-29)
+
+
+### Bug Fixes
+
+* Add package version for Sentry ([b886cff](https://github.com/somleng/sms-gateway/commit/b886cffcd593d96d264486df2c931c98c52d6ab0))
+
 ## [1.2.18](https://github.com/somleng/sms-gateway/compare/v1.2.17...v1.2.18) (2024-11-29)
 
 
