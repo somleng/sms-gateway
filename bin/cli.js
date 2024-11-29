@@ -8,9 +8,11 @@ import * as Sentry from "@sentry/node";
 import SomlengClient from "../lib/somleng_client.js";
 import HTTPServer from "../lib/http_server/index.js";
 import { GoIPGateway, SMPPGateway, DummyGateway } from "../lib/gateways/index.js";
+import packageJson from "../package.json";
 
 Sentry.init({
   dsn: "https://b4c80554595b4e75a9904318a8fe005d@o125014.ingest.sentry.io/4504756942864384",
+  release: packageJson.version,
 });
 
 async function main() {
