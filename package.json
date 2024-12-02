@@ -16,7 +16,7 @@
   "license": "MIT",
   "dependencies": {
     "@anycable/core": "^0.9.1",
-    "@sentry/node": "^8.41.0",
+    "@sentry/node": "^8.42.0",
     "@sentry/tracing": "^7.114.0",
     "commander": "^12.1.0",
     "smpp": "^0.6.0-rc.4",
