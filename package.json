@@ -24,7 +24,7 @@
     "ws": "^8.18.2"
   },
   "devDependencies": {
-    "esbuild": "^0.25.4",
+    "esbuild": "^0.25.5",
     "eslint": "^8.57.1",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^10.1.5",
