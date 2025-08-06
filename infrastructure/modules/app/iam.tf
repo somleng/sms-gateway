@@ -18,18 +18,6 @@ resource "aws_iam_role" "ecs_task_role" {
   assume_role_policy = data.aws_iam_policy_document.ecs_task_assume_role_policy.json
 }
 
-resource "aws_iam_policy" "ecs_task_policy" {
-  name = "${var.app_identifier}-ecs-task-policy"
-
-  policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-  ]
-}
-EOF
-}
-
 # https://aws.amazon.com/blogs/containers/new-using-amazon-ecs-exec-access-your-containers-fargate-ec2/
 resource "aws_iam_policy" "ecs_exec_policy" {
   name = "${var.app_identifier}-ecs-exec-policy"
@@ -51,11 +39,6 @@ resource "aws_iam_policy" "ecs_exec_policy" {
   ]
 }
 EOF
-}
-
-resource "aws_iam_role_policy_attachment" "ecs_task_policy" {
-  role       = aws_iam_role.ecs_task_role.id
-  policy_arn = aws_iam_policy.ecs_task_policy.arn
 }
 
 resource "aws_iam_role_policy_attachment" "ecs_exec_policy" {

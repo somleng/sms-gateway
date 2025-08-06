@@ -32,7 +32,7 @@ resource "aws_ecs_task_definition" "this" {
       essential = true,
       portMappings = [
         {
-          containerPort = 80
+          containerPort = 3210
         }
       ],
       secrets = [
@@ -88,6 +88,15 @@ resource "aws_ecs_capacity_provider" "this" {
       target_capacity           = 100
     }
   }
+}
+
+resource "aws_ecs_cluster_capacity_providers" "this" {
+  cluster_name = aws_ecs_cluster.this.name
+
+  capacity_providers = [
+    aws_ecs_capacity_provider.this.name,
+    "FARGATE"
+  ]
 }
 
 
