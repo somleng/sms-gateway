@@ -62,7 +62,7 @@ resource "aws_ecs_task_definition" "this" {
       command = [
         "sh",
         "-c",
-        "somleng-sms-gateway dummy"
+        "somleng-sms-gateway dummy -k $DEVICE_KEY"
       ]
     }
   ])
