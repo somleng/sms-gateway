@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.20](https://github.com/somleng/sms-gateway/compare/v1.2.19...v1.2.20) (2025-08-11)
+
+
+### Bug Fixes
+
+* update release please github action ([f9b408d](https://github.com/somleng/sms-gateway/commit/f9b408dcf5bd14d371bca08e2af9bd435d594a53))
+
 ## [1.2.19](https://github.com/somleng/sms-gateway/compare/v1.2.18...v1.2.19) (2024-11-29)
 
 
