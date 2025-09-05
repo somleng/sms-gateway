@@ -29,7 +29,7 @@ describe(SomlengClient, () => {
   });
 
   it("notifies delivery receipt", async () => {
-    await client.notifyDeliveryReceipt("data");
+    await client.notifyMessageStatus("data");
 
     expect(cable.outgoing).toEqual([{ action: "sent", payload: "data" }]);
   });
