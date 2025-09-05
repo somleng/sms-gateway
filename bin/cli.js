@@ -98,6 +98,13 @@ async function main() {
   });
   httpServer.start();
 
+  const notifyMessageStatus = async (id, status) => {
+    return await client.notifyMessageStatus({
+      id: id,
+      status: status,
+    });
+  };
+
   logger.debug("Connecting to Somleng");
   await client.subscribe();
 
@@ -105,7 +112,7 @@ async function main() {
     logger.debug("onNewMessage", message);
 
     try {
-      const deliveryReceipt = await gateway.sendMessage({
+      const response = await gateway.sendMessage({
         channel: message.channel,
         source: message.from,
         destination: message.to,
@@ -113,26 +120,37 @@ async function main() {
       });
 
       logger.debug("Sending a message", message);
-      outboundQueue.set(deliveryReceipt.messageId, { messageId: message.id });
+
+      if (response.messageId && response.messageId.toString().length) {
+        outboundQueue.set(response.messageId, { messageId: message.id });
+
+        await notifyMessageStatus(message.id, "sent");
+      } else {
+        await notifyMessageStatus(message.id, "failed");
+      }
     } catch (e) {
       console.error(e.message);
+      await notifyMessageStatus(message.id, "failed");
     }
   });
 
-  gateway.onSent(async (deliveryReceipt) => {
-    logger.debug("onSent", deliveryReceipt);
+  gateway.onDeliveryReceipt(async (deliveryReceipt) => {
+    logger.debug("onDeliveryReceipt", deliveryReceipt);
 
     if (outboundQueue.has(deliveryReceipt.messageId)) {
       logger.debug(
-        "notifyDeliveryReceipt: ",
+        "notifyMessageStatus: ",
         outboundQueue.get(deliveryReceipt.messageId).messageId,
         deliveryReceipt,
       );
 
-      await client.notifyDeliveryReceipt({
-        id: outboundQueue.get(deliveryReceipt.messageId).messageId,
-        status: deliveryReceipt.status,
-      });
+      // "sent" is handled in onNewMessage
+      if (deliveryReceipt.status !== "sent") {
+        await notifyMessageStatus(
+          outboundQueue.get(deliveryReceipt.messageId).messageId,
+          deliveryReceipt.status,
+        );
+      }
 
       outboundQueue.delete(deliveryReceipt.messageId);
     }
