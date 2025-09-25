@@ -82,7 +82,7 @@ async function main() {
       format.timestamp(),
       format.json(),
     ),
-    transports: [new transports.Console({ forceConsole: true })],
+    transports: [new transports.Console()],
   });
 
   logger.debug("Connecting to Gateway");
