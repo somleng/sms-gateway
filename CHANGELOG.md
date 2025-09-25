@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.24](https://github.com/somleng/sms-gateway/compare/v1.2.23...v1.2.24) (2025-09-25)
+
+
+### Bug Fixes
+
+* Handle padded message ids in delivery receipts ([#563](https://github.com/somleng/sms-gateway/issues/563)) ([6392853](https://github.com/somleng/sms-gateway/commit/63928539d8b5ec2e3c58bd6bb40a78d9ed329529))
+
 ## [1.2.23](https://github.com/somleng/sms-gateway/compare/v1.2.22...v1.2.23) (2025-09-25)
 
 
