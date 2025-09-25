@@ -139,22 +139,26 @@ async function main() {
   gateway.onDeliveryReceipt(async (deliveryReceipt) => {
     logger.debug("onDeliveryReceipt", deliveryReceipt);
 
+    const numericMessageId = parseInt(deliveryReceipt.messageId).toString();
+    let queueKey;
+
     if (outboundQueue.has(deliveryReceipt.messageId)) {
-      logger.debug(
-        "notifyMessageStatus: ",
-        outboundQueue.get(deliveryReceipt.messageId).messageId,
-        deliveryReceipt,
-      );
+      queueKey = deliveryReceipt.messageId;
+    } else if (outboundQueue.has(numericMessageId)) {
+      queueKey = numericMessageId;
+    }
+
+    if (queueKey) {
+      outboundMessage = outboundQueue.get(queueKey);
+
+      logger.debug("notifyMessageStatus: ", outboundMessage.messageId, deliveryReceipt);
 
       // "sent" is handled in onNewMessage
       if (deliveryReceipt.status !== "sent") {
-        await notifyMessageStatus(
-          outboundQueue.get(deliveryReceipt.messageId).messageId,
-          deliveryReceipt.status,
-        );
+        await notifyMessageStatus(outboundMessage.messageId, deliveryReceipt.status);
       }
 
-      outboundQueue.delete(deliveryReceipt.messageId);
+      outboundQueue.delete(queueKey);
     }
   });
 
