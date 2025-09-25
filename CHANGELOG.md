@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.22](https://github.com/somleng/sms-gateway/compare/v1.2.21...v1.2.22) (2025-09-25)
+
+
+### Bug Fixes
+
+* Enable Flash SMS ([#559](https://github.com/somleng/sms-gateway/issues/559)) ([1590424](https://github.com/somleng/sms-gateway/commit/1590424500675fc3fa32b4aa225d88838d6ac8d5))
+
 ## [1.2.21](https://github.com/somleng/sms-gateway/compare/v1.2.20...v1.2.21) (2025-09-05)
 
 
