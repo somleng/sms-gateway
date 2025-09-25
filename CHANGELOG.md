@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.25](https://github.com/somleng/sms-gateway/compare/v1.2.24...v1.2.25) (2025-09-25)
+
+
+### Bug Fixes
+
+* Fix logging of delivery receipts ([#565](https://github.com/somleng/sms-gateway/issues/565)) ([994cca3](https://github.com/somleng/sms-gateway/commit/994cca390ffc6d3126d002b418f4e1c391ef1f63))
+
 ## [1.2.24](https://github.com/somleng/sms-gateway/compare/v1.2.23...v1.2.24) (2025-09-25)
 
 
