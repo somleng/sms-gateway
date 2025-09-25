@@ -151,7 +151,7 @@ async function main() {
     if (queueKey) {
       outboundMessage = outboundQueue.get(queueKey);
 
-      logger.debug("notifyMessageStatus: ", outboundMessage.messageId, deliveryReceipt);
+      logger.debug("notifyMessageStatus: ", outboundMessage.messageId);
 
       // "sent" is handled in onNewMessage
       if (deliveryReceipt.status !== "sent") {
