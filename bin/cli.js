@@ -53,12 +53,14 @@ async function main() {
     .requiredOption("--smpp-port <value>", "SMPP port", "2775")
     .requiredOption("--smpp-system-id <value>", "SMPP System ID")
     .requiredOption("--smpp-password <value>", "SMPP password")
+    .option("--flash-sms-encoding", "Enable Flash SMS encoding")
     .action((commandOptions) => {
       gateway = new SMPPGateway({
         host: commandOptions.smppHost,
         port: commandOptions.smppPort,
         systemId: commandOptions.smppSystemId,
         password: commandOptions.smppPassword,
+        flashSmsEncoding: commandOptions.flashSmsEncoding,
         debug: program.opts().verbose,
       });
     });
@@ -80,7 +82,7 @@ async function main() {
       format.timestamp(),
       format.json(),
     ),
-    transports: [new transports.Console()],
+    transports: [new transports.Console({ forceConsole: true })],
   });
 
   logger.debug("Connecting to Gateway");
