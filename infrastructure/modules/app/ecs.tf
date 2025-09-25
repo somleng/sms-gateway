@@ -62,7 +62,7 @@ resource "aws_ecs_task_definition" "this" {
       command = [
         "sh",
         "-c",
-        "somleng-sms-gateway smpp --verbose -k $DEVICE_KEY --smpp-host $SMPP_HOST --smpp-port $SMPP_PORT --smpp-system-id $SMPP_USERNAME --smpp-password $SMPP_PASSWORD"
+        "somleng-sms-gateway smpp -v -k $DEVICE_KEY --flash-sms-encoding --smpp-host $SMPP_HOST --smpp-port $SMPP_PORT --smpp-system-id $SMPP_USERNAME --smpp-password $SMPP_PASSWORD"
       ]
     }
   ])
