@@ -1,6 +1,6 @@
 {
   "name": "somleng-sms-gateway",
-  "version": "1.2.22",
+  "version": "1.2.23",
   "type": "module",
   "main": "index.js",
   "bin": {
