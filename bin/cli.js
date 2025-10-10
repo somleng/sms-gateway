@@ -91,6 +91,7 @@ async function main() {
   const client = new SomlengClient({
     domain: options.domain,
     deviceKey: options.key,
+    logger: logger,
   });
 
   const httpServer = new HTTPServer({
@@ -111,8 +112,6 @@ async function main() {
   await client.subscribe();
 
   client.onNewMessage(async (message) => {
-    logger.debug("onNewMessage", message);
-
     try {
       const response = await gateway.sendMessage({
         channel: message.channel,
