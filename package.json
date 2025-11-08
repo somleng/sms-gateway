@@ -16,14 +16,14 @@
   "license": "MIT",
   "dependencies": {
     "@anycable/core": "^1.1.2",
-    "@sentry/node": "^10.18.0",
-    "commander": "^14.0.1",
+    "@sentry/node": "^10.23.0",
+    "commander": "^14.0.2",
     "smpp": "^0.6.0-rc.4",
     "winston": "^3.18.3",
     "ws": "^8.18.3"
   },
   "devDependencies": {
-    "esbuild": "^0.25.10",
+    "esbuild": "^0.25.12",
     "eslint": "^8.57.1",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^10.1.8",
