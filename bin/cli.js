@@ -1,19 +1,17 @@
 #!/usr/bin/env node
 
+import * as Sentry from "@sentry/node";
+import packageJson from "../package.json" with { type: "json" };
+
 import { program } from "commander";
 import { createLogger, format, transports } from "winston";
-import "@sentry/tracing";
-import * as Sentry from "@sentry/node";
 
 import SomlengClient from "../lib/somleng_client.js";
 import HTTPServer from "../lib/http_server/index.js";
 import { GoIPGateway, SMPPGateway, DummyGateway } from "../lib/gateways/index.js";
-import packageJson from "../package.json" with { type: "json" };
 
-Sentry.init({
-  dsn: "https://b4c80554595b4e75a9904318a8fe005d@o125014.ingest.sentry.io/4504756942864384",
-  release: packageJson.version,
-});
+const SENTRY_DSN =
+  "https://b4c80554595b4e75a9904318a8fe005d@o125014.ingest.us.sentry.io/4504756942864384";
 
 async function main() {
   let options = {};
@@ -24,6 +22,7 @@ async function main() {
     .requiredOption("-k, --key <value>", "Device key")
     .requiredOption("-d, --domain <value>", "Somleng Domain", "wss://app.somleng.org")
     .requiredOption("-p, --http-server-port <value>", "HTTP Server Port", "3210")
+    .option("-e, --environment <value>", "Environment (production or development)", "development")
     .option("-v, --verbose", "Output extra debugging")
     .showHelpAfterError();
 
@@ -74,6 +73,11 @@ async function main() {
 
   program.parse();
   options = { ...options, ...program.opts() };
+
+  Sentry.init({
+    dsn: options.environment === "production" ? SENTRY_DSN : null,
+    release: packageJson.version,
+  });
 
   const logger = createLogger({
     level: options.verbose ? "debug" : "info",
@@ -175,5 +179,7 @@ async function main() {
 main().catch((error) => {
   console.error(error);
   Sentry.captureException(error);
-  process.exit(1);
+
+  // Cannot use process.exit(1) here because it will not trigger the Sentry error capture
+  process.exitCode = 1;
 });
