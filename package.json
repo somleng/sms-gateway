@@ -9,7 +9,7 @@
   "scripts": {
     "test": "NODE_OPTIONS='--experimental-vm-modules' jest",
     "build": "esbuild bin/cli.js --bundle --platform=node --outfile=build/somleng-sms-gateway.js",
-    "dist": "bin/build-sea-package"
+    "dist": "npm run build && bin/build-sea-package"
   },
   "keywords": [],
   "author": "Somleng Team",
@@ -17,7 +17,6 @@
   "dependencies": {
     "@anycable/core": "^1.1.2",
     "@sentry/node": "^10.23.0",
-    "@sentry/tracing": "^7.120.4",
     "commander": "^14.0.2",
     "smpp": "^0.6.0-rc.4",
     "winston": "^3.18.3",

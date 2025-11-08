@@ -1,13 +1,17 @@
 import { TestCable } from "../test_helper";
 import SomlengClient from "../../lib/somleng_client";
+import { createLogger, transports } from "winston";
 
 describe(SomlengClient, () => {
   let client;
   let cable;
+  const logger = createLogger({
+    transports: [new transports.Console({ silent: true })],
+  });
 
   beforeEach(async () => {
     cable = new TestCable();
-    client = new SomlengClient({ cable: cable });
+    client = new SomlengClient({ cable, logger });
 
     await client.subscribe();
   });
