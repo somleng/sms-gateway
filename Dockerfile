@@ -46,7 +46,7 @@ ARG APP_ROOT="/app"
 WORKDIR $APP_ROOT
 
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y wget
+    apt-get install --no-install-recommends -y wget libatomic1
 
 ENV PATH "$PATH:$APP_ROOT"
 COPY --link --from=build $APP_ROOT $APP_ROOT

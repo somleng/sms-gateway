@@ -37,6 +37,7 @@ Options:
   -k, --key <value>               Device key
   -d, --domain <value>            Somleng Domain (default: "wss://app.somleng.org")
   -p, --http-server-port <value>  HTTP Server Port (default: "3210")
+  -e, --environment <value>       Environment (production or development) (default: "development")
   -v, --verbose                   Output extra debugging
   -h, --help                      display help for command
 
@@ -44,7 +45,7 @@ Commands:
   goip [options]                  connect to GoIP Gateway
   smpp [options]                  connect to SMPP Gateway
   dummy                           connect to dummy Gateway
-  help [command]                  display help for command
+  help [command]                  display help for commandd
 ```
 
 The application supports a number of connection modes including:
