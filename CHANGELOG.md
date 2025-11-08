@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://github.com/somleng/sms-gateway/compare/v1.2.25...v2.0.0) (2025-11-08)
+
+
+### ⚠ BREAKING CHANGES
+
+* Verify before sending the actual message ([#573](https://github.com/somleng/sms-gateway/issues/573))
+
+### Features
+
+* Verify before sending the actual message ([#573](https://github.com/somleng/sms-gateway/issues/573)) ([5dd48fe](https://github.com/somleng/sms-gateway/commit/5dd48fefa685cc1170364639c400f2d0bae9a361))
+
 ## [1.2.25](https://github.com/somleng/sms-gateway/compare/v1.2.24...v1.2.25) (2025-09-25)
 
 
