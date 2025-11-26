@@ -44,6 +44,15 @@ describe(SMPPDeliveryReceipt, () => {
     expect(deliveryReceipt.status).toEqual("failed");
   });
 
+  it("parses a expired receipt", () => {
+    const message =
+      "id:0003493221 sub:001 dlvrd:001 submit date:2511240413 done date:2511260413 stat:EXPIRED err:254 text:??????????";
+
+    const deliveryReceipt = SMPPDeliveryReceipt.parse(message);
+
+    expect(deliveryReceipt.status).toEqual("failed");
+  });
+
   it("handles unsupported message format", () => {
     const message =
       "id:88316820 sub:0 dlvrd:0 submit date:2302281324 done date:2302281325 err:500 Text:Hello World from out";
@@ -55,7 +64,7 @@ describe(SMPPDeliveryReceipt, () => {
 
   it("handles unsupported delivery status", () => {
     const message =
-      "id:5516a151-4970-45b6-b73e-95aefdb11cbf sub:001 dlvrd:001 submit date:2302231414 done date:230223194211 stat:EXPIRED err:000 text:Hello";
+      "id:5516a151-4970-45b6-b73e-95aefdb11cbf sub:001 dlvrd:001 submit date:2302231414 done date:230223194211 stat:FOOBAR err:000 text:Hello";
 
     expect(() => {
       SMPPDeliveryReceipt.parse(message);
