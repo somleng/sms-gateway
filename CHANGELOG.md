@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.3](https://github.com/somleng/sms-gateway/compare/v2.0.2...v2.0.3) (2025-11-26)
+
+
+### Bug Fixes
+
+* Handle expired delivery receipts ([#599](https://github.com/somleng/sms-gateway/issues/599)) ([89b01ea](https://github.com/somleng/sms-gateway/commit/89b01eac0115a944ec833f61b3e9c72ab8b8dcfb))
+
 ## [2.0.2](https://github.com/somleng/sms-gateway/compare/v2.0.1...v2.0.2) (2025-11-08)
 
 
