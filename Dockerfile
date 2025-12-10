@@ -32,11 +32,13 @@ RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y wget libatomic1 && \
     rm -rf /var/lib/apt/lists/*
 
-ENV PATH="$PATH:$APP_ROOT"
-COPY --link --from=export-linux /somleng-sms-gateway-linux-* $APP_ROOT
+RUN mkdir -p $APP_ROOT
+
+COPY --link --from=export-linux /somleng-sms-gateway-linux-* $APP_ROOT/
 
 RUN mv $APP_ROOT/somleng-sms-gateway-linux-* $APP_ROOT/somleng-sms-gateway && \
     chmod +x $APP_ROOT/somleng-sms-gateway
 
+ENV PATH="$PATH:$APP_ROOT"
 HEALTHCHECK --interval=10s --timeout=5s --retries=10 CMD wget --server-response --spider --quiet http://localhost:3210 2>&1 | grep '200 OK' > /dev/null
 CMD ["somleng-sms-gateway"]
