@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.6](https://github.com/somleng/sms-gateway/compare/v2.0.5...v2.0.6) (2026-02-11)
+
+
+### Bug Fixes
+
+* dummy gateway delivery receipt ([#633](https://github.com/somleng/sms-gateway/issues/633)) ([6291320](https://github.com/somleng/sms-gateway/commit/6291320bb3c09839c4393bb60704a7b7a94e602a))
+
 ## [2.0.5](https://github.com/somleng/sms-gateway/compare/v2.0.4...v2.0.5) (2025-12-10)
 
 
