@@ -82,7 +82,7 @@ jobs:
           echo "full_package_name=$full_package_name" >> $GITHUB_OUTPUT
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ steps.get-package-name.outputs.full_package_name }}
           path: build/${{ steps.get-package-name.outputs.full_package_name }}
