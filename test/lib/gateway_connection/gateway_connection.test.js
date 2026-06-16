@@ -75,6 +75,17 @@ describe("GatewayConnection", () => {
     expect(unhealthySubject.connection.isHealthy()).toBe(false);
   });
 
+  it("disconnects both the gateway and somleng client", async () => {
+    const { connection, gateway, somlengClient } = buildSubject();
+    gateway.disconnect = jest.fn().mockResolvedValue();
+    somlengClient.disconnect = jest.fn().mockResolvedValue();
+
+    await connection.disconnect();
+
+    expect(gateway.disconnect).toHaveBeenCalled();
+    expect(somlengClient.disconnect).toHaveBeenCalled();
+  });
+
   it("returns status with sanitized gateway options", () => {
     const { connection } = buildSubject({
       gatewayConfig: { host: "smpp.example.com", port: 2775, password: "secret" },

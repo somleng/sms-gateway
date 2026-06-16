@@ -82,4 +82,13 @@ describe(SomlengClient, () => {
 
     expect(cable.outgoing).toEqual([{ action: "received", payload: "message" }]);
   });
+
+  it("disconnects the cable subscriptions", async () => {
+    const disconnectSpy = jest.spyOn(cable, "disconnect");
+
+    await client.disconnect();
+
+    expect(disconnectSpy).toHaveBeenCalled();
+    expect(cable.channels).toEqual({});
+  });
 });

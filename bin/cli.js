@@ -108,14 +108,66 @@ async function main() {
     verbose: options.verbose,
   });
 
-  for (const gatewayConnection of gatewayConnections) {
-    await gatewayConnection.connect();
-  }
-
   const httpServer = new HTTPServer({
     port: options.httpServerPort,
     gatewayConnections,
   });
+
+  let isShuttingDown = false;
+  const shutdown = async (signal) => {
+    if (isShuttingDown) {
+      return;
+    }
+
+    isShuttingDown = true;
+    logger.info("Shutting down", { signal });
+
+    const forceShutdownTimer = setTimeout(() => {
+      logger.error("Forced shutdown after timeout", { signal });
+      process.exit(1);
+    }, 10000);
+    forceShutdownTimer.unref();
+
+    try {
+      const results = await Promise.allSettled([
+        httpServer.stop(),
+        ...gatewayConnections.map((gatewayConnection) => gatewayConnection.disconnect()),
+      ]);
+
+      clearTimeout(forceShutdownTimer);
+
+      const failures = results
+        .filter((result) => result.status === "rejected")
+        .map((result) => result.reason);
+
+      if (failures.length > 0) {
+        logger.error("Shutdown failed", {
+          signal,
+          errors: failures.map((error) => error.message),
+        });
+        process.exit(1);
+      }
+
+      process.exit(0);
+    } catch (error) {
+      clearTimeout(forceShutdownTimer);
+      logger.error("Shutdown failed", { error: error.message, signal });
+      process.exit(1);
+    }
+  };
+
+  process.on("SIGINT", () => {
+    void shutdown("SIGINT");
+  });
+
+  process.on("SIGTERM", () => {
+    void shutdown("SIGTERM");
+  });
+
+  for (const gatewayConnection of gatewayConnections) {
+    await gatewayConnection.connect();
+  }
+
   await httpServer.start();
 }
 
