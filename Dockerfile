@@ -35,10 +35,11 @@ RUN apt-get update -qq && \
 RUN mkdir -p $APP_ROOT
 
 COPY --link --from=export-linux /somleng-sms-gateway-linux-* $APP_ROOT/
+COPY --link docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 
 RUN mv $APP_ROOT/somleng-sms-gateway-linux-* $APP_ROOT/somleng-sms-gateway && \
-    chmod +x $APP_ROOT/somleng-sms-gateway
+    chmod +x $APP_ROOT/somleng-sms-gateway /usr/local/bin/docker-entrypoint.sh
 
 ENV PATH="$PATH:$APP_ROOT"
 HEALTHCHECK --interval=10s --timeout=5s --retries=10 CMD wget --server-response --spider --quiet http://localhost:3210 2>&1 | grep '200 OK' > /dev/null
-CMD ["somleng-sms-gateway"]
+ENTRYPOINT ["docker-entrypoint.sh"]

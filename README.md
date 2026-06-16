@@ -58,7 +58,7 @@ The application supports a number of connection modes including:
 ### Running with Docker
 
 ```sh
-docker run -p 3210:3210 somleng/sms-gateway somleng-sms-gateway [options] [command]
+docker run -p 3210:3210 somleng/sms-gateway [options] [command]
 ```
 
 ### Web Interface
