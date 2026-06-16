@@ -103,8 +103,8 @@ async function main() {
   const connectionConfigs = buildConnectionConfigs({ inlineCommand, options });
   const gatewayConnections = buildGatewayConnections({
     connectionConfigs,
-    domain: options.domain,
     logger,
+    domain: options.domain,
     verbose: options.verbose,
   });
 
