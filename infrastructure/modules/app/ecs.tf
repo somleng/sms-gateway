@@ -41,7 +41,7 @@ resource "aws_ecs_task_definition" "this" {
           valueFrom = aws_ssm_parameter.gateway_config.name
         }
       ],
-      command = ["somleng-sms-gateway"]
+      command = ["somleng-sms-gateway", "-e", "production", "-v"]
     }
   ])
 
