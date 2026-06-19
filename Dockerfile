@@ -10,6 +10,10 @@ COPY . .
 RUN package_name=$(npm pkg get name | xargs echo) && \
     package_version=$(npm pkg get version | xargs echo) && \
     full_package_name=$package_name-linux-$(arch)-v$package_version && \
+    mkdir -p build && \
+    echo "$package_name" > build/package_name.txt && \
+    echo "$package_version" > build/package_version.txt && \
+    echo "$full_package_name" > build/full_package_name.txt && \
     npm run dist $full_package_name
 
 FROM scratch AS export-linux
