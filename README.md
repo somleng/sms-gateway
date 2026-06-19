@@ -34,7 +34,8 @@ npm run dist
 Usage: somleng-sms-gateway [options] [command]
 
 Options:
-  -k, --key <value>               Device key
+  -c, --config <value>            Path to gateway JSON config
+  -k, --key <value>               Device key (required for inline cli mode)
   -d, --domain <value>            Somleng Domain (default: "wss://app.somleng.org")
   -p, --http-server-port <value>  HTTP Server Port (default: "3210")
   -e, --environment <value>       Environment (production or development) (default: "development")
@@ -57,7 +58,7 @@ The application supports a number of connection modes including:
 ### Running with Docker
 
 ```sh
-docker run -p 3210:3210 somleng/sms-gateway somleng-sms-gateway [options] [command]
+docker run -p 3210:3210 somleng/sms-gateway [options] [command]
 ```
 
 ### Web Interface
@@ -70,6 +71,43 @@ at [http://localhost:3210](http://localhost:3210).
 ### Connection Modes
 
 The documentation for running the SMS Gateway for each connection mode can be found below.
+
+#### Config File
+
+Use `--config` to start multiple gateway connections.
+
+```sh
+somleng-sms-gateway --config ./gateway-config.json
+```
+
+Example config:
+
+```json
+{
+  "carrier-a-gateway": {
+    "deviceKey": "device-key-a",
+    "mode": "smpp",
+    "options": {
+      "host": "smpp-a.example.com",
+      "port": 2775,
+      "systemId": "system-id-a",
+      "password": "secret-a",
+      "flashSmsEncoding": false
+    }
+  },
+  "carrier-b-gateway": {
+    "deviceKey": "device-key-b",
+    "mode": "goip",
+    "options": {
+      "host": "goip.example.com",
+      "port": 2775,
+      "systemId": "goip-user",
+      "password": "secret-b",
+      "channels": 8
+    }
+  },
+}
+```
 
 #### SMPP
 

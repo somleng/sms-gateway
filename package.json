@@ -7,7 +7,7 @@
     "somleng-sms-gateway": "bin/cli.js"
   },
   "scripts": {
-    "test": "NODE_OPTIONS='--experimental-vm-modules' jest",
+    "test": "jest",
     "build": "esbuild bin/cli.js --bundle --platform=node --outfile=build/somleng-sms-gateway.js",
     "dist": "npm run build && bin/build-sea-package"
   },
@@ -31,8 +31,10 @@
     "jest": "^30.4.2",
     "prettier": "3.8.4"
   },
+  "overrides": {
+    "js-yaml": "4.2.0"
+  },
   "directories": {
     "lib": "lib"
-  },
-  "description": ""
+  }
 }

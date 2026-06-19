@@ -37,33 +37,11 @@ resource "aws_ecs_task_definition" "this" {
       ],
       secrets = [
         {
-          name      = "DEVICE_KEY",
-          valueFrom = aws_ssm_parameter.device_key.name
-        },
-        {
-          name      = "SMPP_HOST",
-          valueFrom = aws_ssm_parameter.smpp_host.name
-        },
-        {
-          name      = "SMPP_USERNAME",
-          valueFrom = aws_ssm_parameter.smpp_username.name
-        },
-        {
-          name      = "SMPP_PASSWORD",
-          valueFrom = aws_ssm_parameter.smpp_password.name
-        },
-      ],
-      environment = [
-        {
-          name  = "SMPP_PORT",
-          value = var.smpp_port
+          name      = "GATEWAY_CONFIG_JSON",
+          valueFrom = aws_ssm_parameter.gateway_config.name
         }
       ],
-      command = [
-        "sh",
-        "-c",
-        "somleng-sms-gateway smpp -v -e production -k $DEVICE_KEY --flash-sms-encoding --smpp-host $SMPP_HOST --smpp-port $SMPP_PORT --smpp-system-id $SMPP_USERNAME --smpp-password $SMPP_PASSWORD"
-      ]
+      command = ["somleng-sms-gateway", "-e", "production", "-v"]
     }
   ])
 

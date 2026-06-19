@@ -78,10 +78,7 @@ resource "aws_iam_policy" "task_execution_custom_policy" {
         "ssm:GetParameters"
       ],
       "Resource": [
-        "${aws_ssm_parameter.device_key.arn}",
-        "${aws_ssm_parameter.smpp_host.arn}",
-        "${aws_ssm_parameter.smpp_username.arn}",
-        "${aws_ssm_parameter.smpp_password.arn}"
+        "${aws_ssm_parameter.gateway_config.arn}"
       ]
     }
   ]

@@ -40,6 +40,10 @@ export class TestCable {
     delete this.channels[identifier];
   }
 
+  disconnect() {
+    this.channels = {};
+  }
+
   broadcast(channel_identifier, message, metadata) {
     if (!this.channels[channel_identifier]) {
       throw Error(`Channel not found: ${channel_identifier}`);
