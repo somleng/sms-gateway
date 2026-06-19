@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/somleng/sms-gateway/compare/v2.0.6...v2.1.0) (2026-06-19)
+
+
+### Features
+
+* add support multiple gateway connections ([9dd7efc](https://github.com/somleng/sms-gateway/commit/9dd7efc15455ae7e875bafb24d9b6cbec7827fb1))
+
 ## [2.0.6](https://github.com/somleng/sms-gateway/compare/v2.0.5...v2.0.6) (2026-02-11)
 
 
