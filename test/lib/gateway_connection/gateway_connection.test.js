@@ -95,6 +95,9 @@ describe("GatewayConnection", () => {
         port: 2775,
         password: "secret",
         apiToken: "token",
+        clientSecret: "abcdefghi",
+        apiKey: "123456789",
+        channels: 2,
       },
     });
 
@@ -106,6 +109,11 @@ describe("GatewayConnection", () => {
       options: {
         host: "smpp.example.com",
         port: 2775,
+        password: "secret***",
+        apiToken: "token***",
+        clientSecret: "abcdef***",
+        apiKey: "123456***",
+        channels: 2,
       },
     });
   });
