@@ -6,7 +6,7 @@ import {
   buildConnectionConfigs,
   buildGatewayConnections,
 } from "../../../lib/gateway_connection/index.js";
-import { SMPPGateway, DummyGateway } from "../../../lib/gateways/index.js";
+import { SMPPGateway, DummyGateway, VMGGateway } from "../../../lib/gateways/index.js";
 import SomlengClient from "../../../lib/somleng_client.js";
 
 describe("gateway_connection", () => {
@@ -40,6 +40,15 @@ describe("gateway_connection", () => {
               channels: 2,
             },
           },
+          "device-3": {
+            deviceKey: "device-key-3",
+            mode: "vmg",
+            options: {
+              host: "vmg.example.com",
+              apiToken: "token-3",
+              from: "VMG Promotion",
+            },
+          },
         }),
       );
 
@@ -71,6 +80,16 @@ describe("gateway_connection", () => {
             systemId: "system-id-2",
             password: "password-2",
             channels: 2,
+          },
+        },
+        {
+          name: "device-3",
+          deviceKey: "device-key-3",
+          mode: "vmg",
+          options: {
+            host: "vmg.example.com",
+            apiToken: "token-3",
+            from: "VMG Promotion",
           },
         },
       ]);
@@ -142,6 +161,16 @@ describe("gateway_connection", () => {
           mode: "dummy",
           options: {},
         },
+        {
+          name: "device-3",
+          deviceKey: "device-key-3",
+          mode: "vmg",
+          options: {
+            host: "vmg.example.com",
+            apiToken: "token-3",
+            from: "VMG Promotion",
+          },
+        },
       ];
 
       const result = buildGatewayConnections({
@@ -151,7 +180,7 @@ describe("gateway_connection", () => {
         verbose: true,
       });
 
-      expect(result).toHaveLength(2);
+      expect(result).toHaveLength(3);
       expect(result[0]).toMatchObject({
         name: "device-1",
         mode: "smpp",
@@ -164,6 +193,13 @@ describe("gateway_connection", () => {
         mode: "dummy",
         deviceKey: "device-key-2",
         gateway: expect.any(DummyGateway),
+        somlengClient: expect.any(SomlengClient),
+      });
+      expect(result[2]).toMatchObject({
+        name: "device-3",
+        mode: "vmg",
+        deviceKey: "device-key-3",
+        gateway: expect.any(VMGGateway),
         somlengClient: expect.any(SomlengClient),
       });
     });
