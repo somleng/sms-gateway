@@ -4,6 +4,7 @@ import GatewayConnection from "../../../lib/gateway_connection/gateway_connectio
 function buildSubject({
   gatewayConnected = true,
   somlengConnected = true,
+  gatewaySupportsDeliveryReceipt = true,
   gatewaySendResponse = { messageId: "abc123" },
   gatewayConfig = {
     host: "smpp.example.com",
@@ -16,6 +17,7 @@ function buildSubject({
   const gateway = {
     connect: jest.fn().mockResolvedValue(),
     isConnected: jest.fn(() => gatewayConnected),
+    supportsDeliveryReceipt: jest.fn(() => gatewaySupportsDeliveryReceipt),
     sendMessage: jest.fn().mockResolvedValue(gatewaySendResponse),
     config: jest.fn(() => gatewayConfig),
     onDeliveryReceipt: jest.fn((callback) => {
@@ -88,7 +90,15 @@ describe("GatewayConnection", () => {
 
   it("returns status with sanitized gateway options", () => {
     const { connection } = buildSubject({
-      gatewayConfig: { host: "smpp.example.com", port: 2775, password: "secret" },
+      gatewayConfig: {
+        host: "smpp.example.com",
+        port: 2775,
+        password: "secret",
+        apiToken: "token",
+        clientSecret: "abcdefghi",
+        apiKey: "123456789",
+        channels: 2,
+      },
     });
 
     expect(connection.status()).toEqual({
@@ -99,7 +109,72 @@ describe("GatewayConnection", () => {
       options: {
         host: "smpp.example.com",
         port: 2775,
+        password: "secret***",
+        apiToken: "token***",
+        clientSecret: "abcdef***",
+        apiKey: "123456***",
+        channels: 2,
       },
+    });
+  });
+
+  it("passes the Somleng message id to the gateway send request", async () => {
+    const { gateway, handlers } = buildSubject();
+
+    await handlers.onNewMessage({
+      id: "message-1",
+      channel: 1,
+      from: "85510888888",
+      to: "85510777777",
+      body: "hello",
+    });
+
+    expect(gateway.sendMessage).toHaveBeenCalledWith({
+      messageId: "message-1",
+      channel: 1,
+      source: "85510888888",
+      destination: "85510777777",
+      shortMessage: "hello",
+    });
+  });
+
+  it("marks non-receipt gateway messages as sent without queueing them", async () => {
+    const { somlengClient, handlers } = buildSubject({
+      gatewaySupportsDeliveryReceipt: false,
+      gatewaySendResponse: { status: "sent" },
+    });
+
+    await handlers.onNewMessage({
+      id: "message-1",
+      channel: 1,
+      from: "85510888888",
+      to: "85510777777",
+      body: "hello",
+    });
+
+    expect(somlengClient.notifyMessageStatus).toHaveBeenCalledWith({
+      id: "message-1",
+      status: "sent",
+    });
+  });
+
+  it("marks non-receipt gateway messages as failed when the gateway returns a failed status", async () => {
+    const { somlengClient, handlers } = buildSubject({
+      gatewaySupportsDeliveryReceipt: false,
+      gatewaySendResponse: { status: "failed" },
+    });
+
+    await handlers.onNewMessage({
+      id: "message-1",
+      channel: 1,
+      from: "85510888888",
+      to: "85510777777",
+      body: "hello",
+    });
+
+    expect(somlengClient.notifyMessageStatus).toHaveBeenCalledWith({
+      id: "message-1",
+      status: "failed",
     });
   });
 
@@ -116,6 +191,7 @@ describe("GatewayConnection", () => {
     await handlers.onNewMessage(message);
 
     expect(gateway.sendMessage).toHaveBeenCalledWith({
+      messageId: "message-1",
       channel: 1,
       source: "85510888888",
       destination: "85510777777",

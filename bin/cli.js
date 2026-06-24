@@ -11,7 +11,7 @@ import {
   buildGatewayConnections,
   buildConnectionConfigs,
 } from "../lib/gateway_connection/index.js";
-import { SUPPORTED_MODES } from "../lib/gateways/index.js";
+import { INLINE_COMMAND_MODES } from "../lib/gateways/index.js";
 
 const SENTRY_DSN =
   "https://b4c80554595b4e75a9904318a8fe005d@o125014.ingest.us.sentry.io/4504756942864384";
@@ -21,7 +21,7 @@ function hasConfigOption(argv) {
 }
 
 function hasInlineCommand(argv) {
-  return argv.some((arg) => SUPPORTED_MODES.has(arg));
+  return argv.some((arg) => INLINE_COMMAND_MODES.has(arg));
 }
 
 async function main() {
