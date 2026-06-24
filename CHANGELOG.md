@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.0](https://github.com/somleng/sms-gateway/compare/v2.1.1...v2.2.0) (2026-06-24)
+
+
+### Features
+
+* Support VMG Gateway ([#685](https://github.com/somleng/sms-gateway/issues/685)) ([35fb377](https://github.com/somleng/sms-gateway/commit/35fb3776afa9bf0f51b700ed48b3503aff7ba00a))
+
 ## [2.1.1](https://github.com/somleng/sms-gateway/compare/v2.1.0...v2.1.1) (2026-06-19)
 
 
