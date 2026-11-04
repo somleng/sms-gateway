@@ -12,6 +12,10 @@ resource "aws_launch_template" "this" {
     security_groups             = concat([aws_security_group.this.id], var.security_groups)
   }
 
+  metadata_options {
+    http_tokens = "required"
+  }
+
   user_data = base64encode(join("\n", [
     "#cloud-config",
     yamlencode({
